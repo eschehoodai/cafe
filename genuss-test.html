@@ -1,0 +1,2151 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Café Praha Zittau – Genussspezialitäten Laboratorium (3 Konzepte)</title>
+  <meta name="description" content="3 innovative Design-Konzepte für die Genussspezialitäten von Café Praha Zittau: 3D-Bento Flip-Cards, Editorial Magazin-Speisekarte und Interaktive Lounge & Story-Slider.">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700;900&family=Outfit:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,400;1,600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    /* ==========================================================================
+       DESIGN SYSTEM & CSS TOKENS
+       ========================================================================== */
+    :root {
+      /* Röstnoten & Böhmisches Gold */
+      --color-espresso-950: #0a0604;
+      --color-espresso-900: #120b08;
+      --color-espresso-850: #1a100c;
+      --color-espresso-800: #241611;
+      --color-espresso-700: #331f18;
+      
+      --color-gold-50: #fbf5ed;
+      --color-gold-100: #f7e8d3;
+      --color-gold-200: #f2d5b0;
+      --color-gold-300: #f4cd9d;
+      --color-gold-400: #e2b47e;
+      --color-gold-500: #c59b67;
+      --color-gold-600: #a97e4b;
+      --color-gold-700: #845d30;
+
+      --color-crema: #edd5be;
+      --color-cream-muted: #d0bead;
+      --color-paper: #f7f2ea;
+      --color-paper-shadow: #e2d7c5;
+      --color-stamp: #c02621;
+      --color-emerald-bio: #3da872;
+
+      /* Typografie */
+      --font-display: 'Playfair Display', Georgia, serif;
+      --font-vintage: 'Cinzel', serif;
+      --font-body: 'Outfit', 'Plus Jakarta Sans', system-ui, sans-serif;
+
+      /* Glassmorphism & Schatten */
+      --glass-dark: rgba(22, 14, 10, 0.94);
+      --glass-card: rgba(36, 22, 17, 0.78);
+      --glass-border-gold: rgba(244, 205, 157, 0.3);
+      --glass-border-glow: rgba(244, 205, 157, 0.65);
+      --shadow-ambient: 0 20px 50px rgba(0, 0, 0, 0.65);
+      --shadow-gold-glow: 0 0 35px rgba(197, 155, 103, 0.35);
+
+      --transition-spring: 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      --transition-smooth: 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: var(--font-body);
+      background-color: var(--color-espresso-950);
+      color: var(--color-gold-100);
+      min-height: 100vh;
+      overflow-x: hidden;
+      position: relative;
+      background-image: 
+        radial-gradient(circle at 50% 12%, rgba(197, 155, 103, 0.15) 0%, transparent 55%),
+        radial-gradient(circle at 10% 80%, rgba(95, 50, 30, 0.2) 0%, transparent 50%),
+        radial-gradient(circle at 90% 70%, rgba(197, 155, 103, 0.12) 0%, transparent 50%);
+      background-attachment: fixed;
+    }
+
+    /* Ambient Kaffeebohnen Canvas */
+    #coffee-particles {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 1;
+      opacity: 0.65;
+    }
+
+    /* ==========================================================================
+       1. TOP LABORATORY CONTROLS & TEST BENCH
+       ========================================================================== */
+    .lab-header {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      background: rgba(14, 8, 5, 0.96);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--glass-border-gold);
+      padding: 0.75rem 1.5rem;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+    }
+
+    .lab-brand {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .lab-logo-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, var(--color-gold-400), var(--color-gold-600));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 15px rgba(197, 155, 103, 0.4);
+      color: #120b08;
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 1.2rem;
+    }
+
+    .lab-title h1 {
+      font-family: var(--font-display);
+      font-size: 1.15rem;
+      color: var(--color-gold-300);
+      letter-spacing: 0.5px;
+      line-height: 1.2;
+    }
+
+    .lab-title span {
+      font-size: 0.75rem;
+      color: var(--color-gold-400);
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      font-weight: 500;
+    }
+
+    /* Concept Selector Tabs */
+    .concept-tabs {
+      display: flex;
+      background: rgba(36, 22, 17, 0.85);
+      padding: 5px;
+      border-radius: 999px;
+      border: 1px solid rgba(244, 205, 157, 0.3);
+      gap: 4px;
+    }
+
+    .tab-btn {
+      background: transparent;
+      border: none;
+      color: var(--color-gold-200);
+      padding: 0.55rem 1.1rem;
+      border-radius: 999px;
+      font-family: var(--font-body);
+      font-size: 0.84rem;
+      font-weight: 500;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.45rem;
+      transition: all var(--transition-smooth);
+      white-space: nowrap;
+    }
+
+    .tab-btn:hover {
+      color: #fff;
+    }
+
+    .tab-btn.active {
+      background: linear-gradient(135deg, var(--color-gold-400), var(--color-gold-600));
+      color: #120b08;
+      font-weight: 700;
+      box-shadow: 0 3px 15px rgba(197, 155, 103, 0.5);
+    }
+
+    /* Lab Action Toggles */
+    .lab-actions {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+
+    .tool-btn {
+      background: rgba(36, 22, 17, 0.8);
+      border: 1px solid rgba(244, 205, 157, 0.25);
+      color: var(--color-gold-200);
+      padding: 0.5rem 0.85rem;
+      border-radius: 8px;
+      font-size: 0.8rem;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      cursor: pointer;
+      transition: all var(--transition-smooth);
+      text-decoration: none;
+    }
+
+    .tool-btn:hover, .tool-btn.active {
+      background: rgba(197, 155, 103, 0.3);
+      border-color: var(--color-gold-300);
+      color: #fff;
+    }
+
+    .tool-btn.badge-pulse::after {
+      content: '';
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #4ade80;
+      display: inline-block;
+      box-shadow: 0 0 8px #4ade80;
+    }
+
+    /* Device Viewport Selector */
+    .device-group {
+      display: flex;
+      background: rgba(22, 14, 10, 0.85);
+      border-radius: 8px;
+      border: 1px solid rgba(244, 205, 157, 0.2);
+      padding: 3px;
+    }
+
+    .device-btn {
+      background: transparent;
+      border: none;
+      color: var(--color-gold-300);
+      padding: 0.35rem 0.65rem;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.82rem;
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+      transition: all 0.2s ease;
+    }
+
+    .device-btn.active {
+      background: rgba(197, 155, 103, 0.35);
+      color: #fff;
+      font-weight: 600;
+    }
+
+    /* ==========================================================================
+       STAGE WRAPPER & RESPONSIVE SIMULATION
+       ========================================================================== */
+    .stage-wrapper {
+      max-width: 1360px;
+      margin: 1.5rem auto 5rem;
+      padding: 0 1.25rem;
+      transition: max-width 0.45s cubic-bezier(0.16, 1, 0.3, 1), padding 0.3s ease;
+      position: relative;
+      z-index: 10;
+    }
+
+    .stage-wrapper.view-tablet {
+      max-width: 768px;
+      padding: 0 1rem;
+    }
+    .stage-wrapper.view-mobile {
+      max-width: 410px;
+      padding: 0 0.5rem;
+    }
+
+    .device-frame-indicator {
+      display: none;
+      text-align: center;
+      margin-bottom: 1.2rem;
+      padding: 0.5rem;
+      background: rgba(197, 155, 103, 0.15);
+      border: 1px dashed var(--color-gold-400);
+      border-radius: 8px;
+      font-size: 0.8rem;
+      color: var(--color-gold-200);
+    }
+    .stage-wrapper.view-mobile .device-frame-indicator,
+    .stage-wrapper.view-tablet .device-frame-indicator {
+      display: block;
+    }
+
+    /* Section Intro Header */
+    .section-intro-header {
+      text-align: center;
+      max-width: 820px;
+      margin: 0 auto 3rem auto;
+      position: relative;
+    }
+
+    .intro-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.4rem 1.1rem;
+      border-radius: 999px;
+      background: rgba(197, 155, 103, 0.15);
+      border: 1px solid rgba(244, 205, 157, 0.35);
+      color: var(--color-gold-300);
+      font-size: 0.82rem;
+      margin-bottom: 1rem;
+      letter-spacing: 0.5px;
+    }
+
+    .intro-title {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 4vw, 3.2rem);
+      line-height: 1.2;
+      color: #fff;
+      margin-bottom: 1rem;
+    }
+
+    .intro-title em {
+      font-style: italic;
+      background: linear-gradient(135deg, var(--color-gold-200), var(--color-gold-400));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .intro-subtitle {
+      font-size: 1.05rem;
+      color: var(--color-crema);
+      line-height: 1.6;
+      opacity: 0.9;
+    }
+
+    .concept-help-banner {
+      background: rgba(36, 22, 17, 0.85);
+      border: 1px dashed rgba(244, 205, 157, 0.4);
+      border-radius: 12px;
+      padding: 0.9rem 1.25rem;
+      font-size: 0.86rem;
+      color: var(--color-gold-200);
+      margin-bottom: 2.5rem;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.75rem;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+    }
+
+    .concept-panel {
+      display: none;
+      opacity: 0;
+      transform: translateY(16px);
+      transition: opacity 0.4s ease, transform 0.4s ease;
+    }
+
+    .concept-panel.active {
+      display: block;
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Common Badge & Pill Utilities */
+    .pill-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      background: rgba(197, 155, 103, 0.15);
+      border: 1px solid rgba(244, 205, 157, 0.3);
+      padding: 0.3rem 0.75rem;
+      border-radius: 999px;
+      font-size: 0.78rem;
+      color: var(--color-gold-200);
+      font-weight: 500;
+    }
+
+    .badge-highlight {
+      background: linear-gradient(135deg, rgba(197, 155, 103, 0.3), rgba(132, 93, 48, 0.4));
+      border: 1px solid var(--color-gold-400);
+      color: #fff;
+    }
+
+    .badge-alert {
+      background: rgba(192, 38, 33, 0.2);
+      border: 1px solid rgba(192, 38, 33, 0.5);
+      color: #fca5a5;
+    }
+
+    /* ==========================================================================
+       KONZEPT 1: 3D BENTO FLIP-CARDS MIT MOBILE-PEEL & TAP-TO-FLIP
+       ========================================================================== */
+    .bento-grid {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 1.5rem;
+      perspective: 1200px;
+    }
+
+    /* Bento Card Sizing */
+    .bento-card {
+      grid-column: span 4;
+      min-height: 480px;
+      position: relative;
+      cursor: pointer;
+      border-radius: 20px;
+      transform-style: preserve-3d;
+      transition: transform 0.7s cubic-bezier(0.2, 0.85, 0.32, 1.2), box-shadow 0.4s ease;
+    }
+
+    /* Featured Wider Cards */
+    .bento-card.card-wide {
+      grid-column: span 6;
+      min-height: 520px;
+    }
+
+    .bento-card:hover {
+      box-shadow: var(--shadow-gold-glow);
+    }
+
+    /* Flipped State */
+    .bento-card.is-flipped {
+      transform: rotateY(180deg);
+    }
+
+    /* Flip Faces */
+    .card-face {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      border-radius: 20px;
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
+      overflow: hidden;
+      border: 1px solid var(--glass-border-gold);
+      box-shadow: var(--shadow-ambient);
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Card Front */
+    .card-front {
+      background: var(--color-espresso-900);
+      z-index: 2;
+      transform: rotateY(0deg);
+    }
+
+    .card-image-bg {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), filter 0.4s ease;
+      filter: brightness(0.92);
+    }
+
+    .bento-card:hover .card-image-bg {
+      transform: scale(1.06);
+      filter: brightness(1);
+    }
+
+    .card-front-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(10, 6, 4, 0.15) 0%, rgba(10, 6, 4, 0.55) 50%, rgba(10, 6, 4, 0.94) 100%);
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 1.75rem;
+    }
+
+    .card-top-pills {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .card-flip-prompt {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      background: rgba(22, 14, 10, 0.85);
+      border: 1px solid rgba(244, 205, 157, 0.4);
+      color: var(--color-gold-300);
+      font-size: 0.74rem;
+      padding: 0.3rem 0.65rem;
+      border-radius: 999px;
+      backdrop-filter: blur(8px);
+      transition: all 0.3s ease;
+    }
+
+    .bento-card:hover .card-flip-prompt {
+      background: var(--color-gold-500);
+      color: #120b08;
+      font-weight: 600;
+      transform: scale(1.04);
+    }
+
+    .card-front-bottom {
+      z-index: 2;
+    }
+
+    .card-category-eyebrow {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: var(--color-gold-400);
+      font-weight: 600;
+      margin-bottom: 0.35rem;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .card-title-front {
+      font-family: var(--font-display);
+      font-size: 1.55rem;
+      line-height: 1.25;
+      color: #fff;
+      margin-bottom: 0.6rem;
+      text-shadow: 0 2px 10px rgba(0,0,0,0.8);
+    }
+
+    .card-wide .card-title-front {
+      font-size: 1.85rem;
+    }
+
+    .card-teaser-quote {
+      font-size: 0.9rem;
+      color: var(--color-crema);
+      line-height: 1.45;
+      opacity: 0.92;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    /* Card Back */
+    .card-back {
+      background: linear-gradient(145deg, #1f130e 0%, #100a07 100%);
+      transform: rotateY(180deg);
+      z-index: 1;
+      padding: 2rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      border-color: rgba(244, 205, 157, 0.45);
+      background-image: 
+        radial-gradient(circle at 100% 0%, rgba(197, 155, 103, 0.2) 0%, transparent 40%),
+        radial-gradient(circle at 0% 100%, rgba(132, 93, 48, 0.2) 0%, transparent 40%);
+    }
+
+    .card-back-header {
+      border-bottom: 1px solid rgba(244, 205, 157, 0.2);
+      padding-bottom: 0.85rem;
+      margin-bottom: 1rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .card-back-title {
+      font-family: var(--font-display);
+      font-size: 1.25rem;
+      color: var(--color-gold-300);
+      line-height: 1.2;
+    }
+
+    .card-back-body {
+      flex: 1;
+      overflow-y: auto;
+      padding-right: 0.4rem;
+      margin-bottom: 1rem;
+    }
+
+    .card-back-body::-webkit-scrollbar {
+      width: 4px;
+    }
+    .card-back-body::-webkit-scrollbar-thumb {
+      background: var(--color-gold-600);
+      border-radius: 4px;
+    }
+
+    .card-back-text {
+      font-size: 0.92rem;
+      color: var(--color-crema);
+      line-height: 1.6;
+      margin-bottom: 1rem;
+    }
+
+    .card-quote-callout {
+      background: rgba(197, 155, 103, 0.1);
+      border-left: 3px solid var(--color-gold-400);
+      padding: 0.65rem 0.85rem;
+      border-radius: 0 8px 8px 0;
+      font-size: 0.85rem;
+      font-style: italic;
+      color: var(--color-gold-200);
+      margin-bottom: 0.85rem;
+    }
+
+    .card-badges-wrap {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+      margin-top: 0.5rem;
+    }
+
+    .card-back-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: 0.75rem;
+      border-top: 1px solid rgba(244, 205, 157, 0.2);
+      gap: 0.5rem;
+    }
+
+    .turn-back-btn {
+      background: transparent;
+      border: 1px solid rgba(244, 205, 157, 0.35);
+      color: var(--color-gold-300);
+      padding: 0.4rem 0.75rem;
+      border-radius: 8px;
+      font-size: 0.78rem;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      transition: all 0.2s ease;
+    }
+
+    .turn-back-btn:hover {
+      background: rgba(197, 155, 103, 0.2);
+      color: #fff;
+    }
+
+    /* Mobile Sheet Mode Switch (Toggle inside Concept 1) */
+    .bento-grid.mode-sheet-drawer .bento-card {
+      transform: none !important;
+    }
+    .bento-grid.mode-sheet-drawer .card-back {
+      transform: translateY(75%);
+      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      z-index: 10;
+      background: rgba(20, 12, 8, 0.95);
+      backdrop-filter: blur(14px);
+    }
+    .bento-grid.mode-sheet-drawer .bento-card:hover .card-back,
+    .bento-grid.mode-sheet-drawer .bento-card.is-sheet-open .card-back {
+      transform: translateY(0%);
+    }
+
+    /* ==========================================================================
+       KONZEPT 2: GRAND CAFÉ EDITORIAL & MAGAZIN SPEISEKARTE (SPLIT-FLOW)
+       ========================================================================== */
+    .editorial-container {
+      display: flex;
+      flex-direction: column;
+      gap: 3.5rem;
+    }
+
+    .editorial-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem;
+      align-items: center;
+      background: rgba(28, 17, 13, 0.6);
+      border: 1px solid rgba(244, 205, 157, 0.25);
+      border-radius: 24px;
+      padding: 2.25rem;
+      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5);
+      backdrop-filter: blur(12px);
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.3s ease, border-color 0.3s ease;
+    }
+
+    .editorial-row:hover {
+      border-color: rgba(244, 205, 157, 0.5);
+      transform: translateY(-3px);
+    }
+
+    /* Reverse order on every second row */
+    .editorial-row.row-reverse {
+      grid-template-columns: 1fr 1fr;
+    }
+    .editorial-row.row-reverse .editorial-media {
+      order: 2;
+    }
+    .editorial-row.row-reverse .editorial-copy {
+      order: 1;
+    }
+
+    .editorial-media {
+      position: relative;
+      border-radius: 18px;
+      overflow: hidden;
+      min-height: 380px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+      border: 1px solid rgba(244, 205, 157, 0.3);
+    }
+
+    .editorial-img {
+      width: 100%;
+      height: 100%;
+      min-height: 380px;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.6s ease;
+    }
+
+    .editorial-row:hover .editorial-img {
+      transform: scale(1.04);
+    }
+
+    .editorial-media-badge {
+      position: absolute;
+      bottom: 1.25rem;
+      left: 1.25rem;
+      background: rgba(14, 8, 5, 0.88);
+      backdrop-filter: blur(8px);
+      border: 1px solid var(--color-gold-400);
+      padding: 0.45rem 1rem;
+      border-radius: 999px;
+      font-size: 0.82rem;
+      color: var(--color-gold-200);
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .editorial-copy {
+      padding: 0.5rem;
+    }
+
+    .editorial-section-number {
+      font-family: var(--font-vintage);
+      color: var(--color-gold-500);
+      font-size: 0.85rem;
+      letter-spacing: 2px;
+      margin-bottom: 0.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .editorial-section-number::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(90deg, var(--color-gold-500), transparent);
+    }
+
+    .editorial-headline {
+      font-family: var(--font-display);
+      font-size: clamp(1.6rem, 2.5vw, 2.2rem);
+      line-height: 1.25;
+      color: #fff;
+      margin-bottom: 1rem;
+    }
+
+    .editorial-text {
+      color: var(--color-crema);
+      font-size: 0.98rem;
+      line-height: 1.7;
+      margin-bottom: 1.25rem;
+    }
+
+    /* Cake Gallery Mini-Thumbnails */
+    .cake-gallery-thumbs {
+      display: flex;
+      gap: 0.6rem;
+      margin-top: 1.2rem;
+      padding-top: 1rem;
+      border-top: 1px solid rgba(244, 205, 157, 0.2);
+    }
+
+    .thumb-btn {
+      width: 58px;
+      height: 58px;
+      border-radius: 10px;
+      overflow: hidden;
+      border: 2px solid transparent;
+      cursor: pointer;
+      padding: 0;
+      background: none;
+      transition: all 0.2s ease;
+      position: relative;
+    }
+
+    .thumb-btn img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .thumb-btn:hover {
+      border-color: var(--color-gold-300);
+      transform: scale(1.08);
+    }
+
+    .thumb-btn.active {
+      border-color: var(--color-gold-400);
+      box-shadow: 0 0 12px rgba(197, 155, 103, 0.6);
+    }
+
+    /* Special Highlight Box */
+    .highlight-card {
+      background: rgba(197, 155, 103, 0.12);
+      border-radius: 12px;
+      padding: 1rem 1.25rem;
+      border-left: 4px solid var(--color-gold-400);
+      margin: 1rem 0;
+    }
+
+    .highlight-card-title {
+      font-weight: 600;
+      color: var(--color-gold-300);
+      font-size: 0.92rem;
+      margin-bottom: 0.35rem;
+    }
+
+    .highlight-card-desc {
+      font-size: 0.88rem;
+      color: var(--color-cream-muted);
+      line-height: 1.5;
+    }
+
+    /* ==========================================================================
+       KONZEPT 3: INTERAKTIVE GENUSS-LOUNGE & MOBILE STORY-CAROUSEL
+       ========================================================================== */
+    .lounge-container {
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+    }
+
+    /* Floating Dock / Category Nav */
+    .lounge-nav-dock {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      background: rgba(24, 15, 11, 0.9);
+      border: 1px solid var(--glass-border-gold);
+      border-radius: 999px;
+      padding: 0.6rem;
+      max-width: 980px;
+      margin: 0 auto;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.5);
+    }
+
+    .lounge-nav-item {
+      background: transparent;
+      border: none;
+      color: var(--color-gold-200);
+      padding: 0.6rem 1.2rem;
+      border-radius: 999px;
+      font-family: var(--font-body);
+      font-size: 0.88rem;
+      font-weight: 500;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: all var(--transition-smooth);
+    }
+
+    .lounge-nav-item:hover {
+      color: #fff;
+      background: rgba(197, 155, 103, 0.15);
+    }
+
+    .lounge-nav-item.active {
+      background: linear-gradient(135deg, var(--color-gold-400), var(--color-gold-600));
+      color: #120b08;
+      font-weight: 700;
+      box-shadow: 0 4px 15px rgba(197, 155, 103, 0.45);
+    }
+
+    /* Central Cinematic Stage */
+    .lounge-stage {
+      background: rgba(22, 14, 10, 0.85);
+      border: 1px solid var(--glass-border-gold);
+      border-radius: 28px;
+      overflow: hidden;
+      display: grid;
+      grid-template-columns: 1.15fr 1fr;
+      min-height: 520px;
+      box-shadow: var(--shadow-ambient);
+      backdrop-filter: blur(16px);
+      position: relative;
+    }
+
+    .lounge-media-column {
+      position: relative;
+      overflow: hidden;
+      background: #000;
+    }
+
+    .lounge-main-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: opacity 0.5s ease, transform 0.7s ease;
+      filter: brightness(0.95);
+    }
+
+    .lounge-media-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(90deg, transparent 60%, rgba(22, 14, 10, 0.95) 100%),
+                  linear-gradient(0deg, rgba(14, 8, 5, 0.7) 0%, transparent 40%);
+      pointer-events: none;
+    }
+
+    .lounge-badge-overlay {
+      position: absolute;
+      top: 1.5rem;
+      left: 1.5rem;
+      z-index: 5;
+    }
+
+    .lounge-content-column {
+      padding: 3rem 2.5rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      position: relative;
+    }
+
+    .lounge-header-group {
+      margin-bottom: 1.25rem;
+    }
+
+    .lounge-category-pill {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: var(--color-gold-400);
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+
+    .lounge-title {
+      font-family: var(--font-display);
+      font-size: clamp(1.8rem, 2.6vw, 2.4rem);
+      line-height: 1.2;
+      color: #fff;
+      margin-bottom: 1rem;
+    }
+
+    .lounge-desc {
+      font-size: 0.98rem;
+      color: var(--color-crema);
+      line-height: 1.7;
+      margin-bottom: 1.5rem;
+    }
+
+    .lounge-features-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      margin-bottom: 2rem;
+    }
+
+    .lounge-feature-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.75rem;
+      font-size: 0.9rem;
+      color: var(--color-gold-100);
+    }
+
+    .feature-icon-bullet {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: rgba(197, 155, 103, 0.25);
+      color: var(--color-gold-400);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.75rem;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    .lounge-bottom-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+      border-top: 1px solid rgba(244, 205, 157, 0.2);
+      padding-top: 1.25rem;
+    }
+
+    .lounge-cta-btn {
+      background: linear-gradient(135deg, var(--color-gold-400), var(--color-gold-600));
+      color: #120b08;
+      border: none;
+      padding: 0.65rem 1.4rem;
+      border-radius: 999px;
+      font-weight: 700;
+      font-size: 0.88rem;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      box-shadow: 0 4px 15px rgba(197, 155, 103, 0.4);
+      transition: all 0.25s ease;
+      text-decoration: none;
+    }
+
+    .lounge-cta-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(197, 155, 103, 0.6);
+      color: #000;
+    }
+
+    /* Carousel Nav Arrows for Lounge */
+    .lounge-step-arrows {
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    .arrow-step-btn {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: rgba(36, 22, 17, 0.8);
+      border: 1px solid rgba(244, 205, 157, 0.3);
+      color: var(--color-gold-300);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s ease;
+    }
+
+    .arrow-step-btn:hover {
+      background: var(--color-gold-500);
+      color: #120b08;
+    }
+
+    /* ==========================================================================
+       MOBILE RESPONSIVENESS & STAGE WRAPPER SIMULATION
+       ========================================================================== */
+    /* When user clicks "Mobile" in the test bench or on real mobile */
+    @media (max-width: 900px) {
+      .bento-grid {
+        grid-template-columns: 1fr;
+      }
+      .bento-card, .bento-card.card-wide {
+        grid-column: span 1;
+        min-height: 440px;
+      }
+      .editorial-row, .editorial-row.row-reverse {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+        padding: 1.5rem;
+      }
+      .editorial-row.row-reverse .editorial-media {
+        order: 1;
+      }
+      .editorial-row.row-reverse .editorial-copy {
+        order: 2;
+      }
+      .lounge-stage {
+        grid-template-columns: 1fr;
+        min-height: auto;
+      }
+      .lounge-media-column {
+        height: 280px;
+      }
+      .lounge-media-overlay {
+        background: linear-gradient(0deg, rgba(22, 14, 10, 0.95) 0%, transparent 60%);
+      }
+      .lounge-content-column {
+        padding: 1.5rem;
+      }
+    }
+
+    /* Stage wrapper simulated mobile */
+    .stage-wrapper.view-mobile .bento-grid {
+      grid-template-columns: 1fr;
+    }
+    .stage-wrapper.view-mobile .bento-card,
+    .stage-wrapper.view-mobile .bento-card.card-wide {
+      grid-column: span 1;
+      min-height: 430px;
+    }
+    .stage-wrapper.view-mobile .card-title-front {
+      font-size: 1.35rem;
+    }
+    .stage-wrapper.view-mobile .editorial-row,
+    .stage-wrapper.view-mobile .editorial-row.row-reverse {
+      grid-template-columns: 1fr;
+      gap: 1.25rem;
+      padding: 1.25rem;
+    }
+    .stage-wrapper.view-mobile .editorial-row.row-reverse .editorial-media {
+      order: 1;
+    }
+    .stage-wrapper.view-mobile .editorial-row.row-reverse .editorial-copy {
+      order: 2;
+    }
+    .stage-wrapper.view-mobile .editorial-media {
+      min-height: 240px;
+    }
+    .stage-wrapper.view-mobile .editorial-img {
+      min-height: 240px;
+    }
+    .stage-wrapper.view-mobile .lounge-stage {
+      grid-template-columns: 1fr;
+      min-height: auto;
+    }
+    .stage-wrapper.view-mobile .lounge-media-column {
+      height: 230px;
+    }
+    .stage-wrapper.view-mobile .lounge-content-column {
+      padding: 1.25rem;
+    }
+    .stage-wrapper.view-mobile .lounge-nav-dock {
+      border-radius: 16px;
+      padding: 0.4rem;
+    }
+    .stage-wrapper.view-mobile .lounge-nav-item {
+      padding: 0.45rem 0.8rem;
+      font-size: 0.8rem;
+    }
+
+    /* Comparison Table at Bottom */
+    .comparison-section {
+      margin-top: 5rem;
+      background: rgba(22, 14, 10, 0.8);
+      border: 1px solid var(--glass-border-gold);
+      border-radius: 20px;
+      padding: 2.5rem;
+    }
+
+    .comparison-title {
+      font-family: var(--font-display);
+      font-size: 1.6rem;
+      color: var(--color-gold-300);
+      margin-bottom: 1.5rem;
+      text-align: center;
+    }
+
+    .comparison-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.9rem;
+    }
+
+    .comparison-table th, .comparison-table td {
+      padding: 1rem;
+      text-align: left;
+      border-bottom: 1px solid rgba(244, 205, 157, 0.15);
+    }
+
+    .comparison-table th {
+      color: var(--color-gold-400);
+      font-family: var(--font-vintage);
+      letter-spacing: 1px;
+      font-size: 0.85rem;
+    }
+
+    .comparison-table tr:hover td {
+      background: rgba(197, 155, 103, 0.08);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Ambient Coffee Canvas -->
+  <canvas id="coffee-particles"></canvas>
+
+  <!-- ==========================================================================
+       LABORATORY HEADER & TOOLBAR
+       ========================================================================== -->
+  <header class="lab-header">
+    <div class="lab-brand">
+      <div class="lab-logo-icon">P</div>
+      <div class="lab-title">
+        <h1>Café Praha • Genuss-Laboratorium</h1>
+        <span>3 Design-Konzepte für „Unser Genussangebot“</span>
+      </div>
+    </div>
+
+    <!-- Concept Tabs -->
+    <div class="concept-tabs" role="tablist">
+      <button class="tab-btn active" data-concept="1" onclick="switchConcept(1)">
+        <span>🎴 Konzept 1: 3D-Bento Flip-Cards</span>
+      </button>
+      <button class="tab-btn" data-concept="2" onclick="switchConcept(2)">
+        <span>📖 Konzept 2: Editorial Magazin-Flow</span>
+      </button>
+      <button class="tab-btn" data-concept="3" onclick="switchConcept(3)">
+        <span>✨ Konzept 3: Lounge &amp; Story-Slider</span>
+      </button>
+    </div>
+
+    <!-- Laboratory Controls & Responsive Frame Switcher -->
+    <div class="lab-actions">
+      <!-- Device Switcher -->
+      <div class="device-group" title="Viewport-Simulation">
+        <button class="device-btn active" onclick="setDeviceView('desktop', this)">🖥️ Desktop</button>
+        <button class="device-btn" onclick="setDeviceView('tablet', this)">📱 Tablet</button>
+        <button class="device-btn" onclick="setDeviceView('mobile', this)">📲 Mobile</button>
+      </div>
+
+      <!-- Links -->
+      <a href="/#genuss" class="tool-btn" title="Zur Hauptseite">
+        <span>← Zurück zur Startseite</span>
+      </a>
+      <a href="/menu-test.html" class="tool-btn" title="Zum Menü-Labor">
+        <span>Kaffee-Menü Test</span>
+      </a>
+    </div>
+  </header>
+
+  <!-- ==========================================================================
+       MAIN TESTBENCH STAGE
+       ========================================================================== -->
+  <main class="stage-wrapper" id="stageWrapper">
+
+    <!-- Responsive Mode Indicator Notice -->
+    <div class="device-frame-indicator" id="deviceIndicator">
+      Simulierte Smartphone-Ansicht (390px Viewport) – Teste Touch-Verhalten, Schriften &amp; Flipping!
+    </div>
+
+    <!-- Section Intro Header (Original Café Praha Branding) -->
+    <div class="section-intro-header">
+      <div class="intro-badge">
+        <span>✨ Kulinarische Tradition &amp; Böhmische Gastfreundschaft</span>
+      </div>
+      <h2 class="intro-title">
+        Unser <em>Genussangebot</em> für Sie
+      </h2>
+      <p class="intro-subtitle">
+        Von frisch gerösteten Kaffeespezialitäten und traditionellen Chlebíčky bis hin zu meisterhafter böhmischer Backkunst, verführerischem Eis und herzhaftem Mittagstisch.
+      </p>
+    </div>
+
+    <!-- ========================================================================
+         KONZEPT 1: 3D BENTO FLIP-CARDS
+         ======================================================================== -->
+    <section class="concept-panel active" id="panelConcept1">
+      
+      <!-- Interactive Helper Banner with Mobile Sheet Drawer Toggle -->
+      <div class="concept-help-banner">
+        <div>
+          <strong>Konzept 1: 3D-Bento Flip-Cards (Kachel-Ansatz)</strong>
+          <p style="font-size: 0.8rem; color: var(--color-crema); margin-top: 2px;">
+            Klicke oder tippe auf eine Kachel, um die Rückseite mit den kompletten Details zu sehen.
+          </p>
+        </div>
+        <div style="display: flex; gap: 0.5rem; align-items: center;">
+          <span style="font-size: 0.78rem; color: var(--color-gold-300);">Mobile Lösung:</span>
+          <button class="tool-btn active" id="toggleFlipModeBtn" onclick="toggleFlipMode()">
+            <span id="flipModeLabel">Modus: 3D Tap-to-Flip ↻</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Bento Grid with 6 items -->
+      <div class="bento-grid" id="bentoContainer">
+
+        <!-- 1. Kaffeespezialitäten (Kompakt) -->
+        <div class="bento-card" onclick="flipCard(this)">
+          <!-- Front -->
+          <div class="card-face card-front">
+            <img src="/images/index/kaffeespezialitaeten_im_cafe_praha_von_klassisch_bis_aussergewoehnlich.jpg" alt="Kaffeespezialitäten im Café Praha" class="card-image-bg">
+            <div class="card-front-overlay">
+              <div class="card-top-pills">
+                <span class="pill-tag">☕ Röstkunst</span>
+                <span class="card-flip-prompt">Details drehen ↻</span>
+              </div>
+              <div class="card-front-bottom">
+                <div class="card-category-eyebrow">Aromatischer Genuss</div>
+                <h3 class="card-title-front">Kaffeespezialitäten</h3>
+                <p class="card-teaser-quote">Von klassisch bis außergewöhnlich – Kaffee, so wie Sie ihn lieben.</p>
+              </div>
+            </div>
+          </div>
+          <!-- Back -->
+          <div class="card-face card-back">
+            <div class="card-back-header">
+              <span class="pill-tag">Kaffee-Bar</span>
+              <button class="turn-back-btn" onclick="event.stopPropagation(); flipCard(this.closest('.bento-card'))">Bild ↻</button>
+            </div>
+            <div class="card-back-body">
+              <h4 class="card-back-title">Kaffeespezialitäten im Café Praha – von klassisch bis außergewöhnlich</h4>
+              <div class="card-quote-callout">
+                „Ob klassischer Cappuccino, kräftiger Espresso oder einen Latte Macchiato mit besonderer Geschmacksnote – wir servieren Ihnen Kaffee, so wie Sie ihn lieben.“
+              </div>
+              <p class="card-back-text">
+                Mit größter Sorgfalt zubereitete Röstungen mit samtiger Crema und harmonischer Würze. Perfekt abgestimmt für den bewussten Moment der Entschleunigung im Herzen von Zittau.
+              </p>
+              <div class="card-badges-wrap">
+                <span class="pill-tag badge-highlight">Espresso</span>
+                <span class="pill-tag badge-highlight">Cappuccino</span>
+                <span class="pill-tag badge-highlight">Latte Macchiato</span>
+                <span class="pill-tag badge-highlight">Eiskaffee</span>
+              </div>
+            </div>
+            <div class="card-back-footer">
+              <span style="font-size: 0.78rem; color: var(--color-gold-400);">Täglich frisch gebrüht</span>
+              <button class="turn-back-btn" onclick="event.stopPropagation(); flipCard(this.closest('.bento-card'))">Kachel wenden ↻</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 2. Baguettes & Chlebíčky (Wide Card) -->
+        <div class="bento-card card-wide" onclick="flipCard(this)">
+          <div class="card-face card-front">
+            <img src="/images/index/der_geschmack_tschechiens_auf_einer_kleinen_schnitte_in_zittau.jpg" alt="Baguettes & Chlebíčky" class="card-image-bg">
+            <div class="card-front-overlay">
+              <div class="card-top-pills">
+                <span class="pill-tag badge-highlight">🥪 Nationalstolz</span>
+                <span class="card-flip-prompt">Details drehen ↻</span>
+              </div>
+              <div class="card-front-bottom">
+                <div class="card-category-eyebrow">Böhmische Delikatesse</div>
+                <h3 class="card-title-front">Baguettes &amp; Chlebíčky</h3>
+                <p class="card-teaser-quote">Der Geschmack Tschechiens – auf einer kleinen Schnitte in Zittau.</p>
+              </div>
+            </div>
+          </div>
+          <div class="card-face card-back">
+            <div class="card-back-header">
+              <span class="pill-tag">Böhmische Brotkunst</span>
+              <button class="turn-back-btn" onclick="event.stopPropagation(); flipCard(this.closest('.bento-card'))">Bild ↻</button>
+            </div>
+            <div class="card-back-body">
+              <h4 class="card-back-title">Der Geschmack Tschechiens – auf einer kleinen Schnitte</h4>
+              <p class="card-back-text">
+                Ein Café mit tschechischem Flair ohne Chlebíčky? Undenkbar! Die beliebten belegten Brote sind ein Klassiker bei uns – frisch, raffiniert und in verschiedenen Varianten erhältlich.
+              </p>
+              <div class="card-quote-callout">
+                „Ob mit Eiersalat, Schinken, Käse oder würziger Debreziner – sie sind ein Muss für Kenner und Neugierige gleichermaßen.“
+              </div>
+              <p class="card-back-text">
+                Dazu bieten wir frisch belegte Baguettes mit Hähnchen, Schinken, Käse, Ei oder Salami – perfekt für den herzhaften Genuss zwischendurch.
+              </p>
+              <div class="card-badges-wrap">
+                <span class="pill-tag badge-highlight">Eiersalat</span>
+                <span class="pill-tag badge-highlight">Prager Schinken</span>
+                <span class="pill-tag badge-highlight">Debreziner</span>
+                <span class="pill-tag badge-highlight">Knusprige Baguettes</span>
+              </div>
+            </div>
+            <div class="card-back-footer">
+              <span style="font-size: 0.78rem; color: var(--color-gold-400);">Frisch zubereitet an der Theke</span>
+              <button class="turn-back-btn" onclick="event.stopPropagation(); flipCard(this.closest('.bento-card'))">Kachel wenden ↻</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 3. Frühstück (Kompakt) -->
+        <div class="bento-card" onclick="flipCard(this)">
+          <div class="card-face card-front">
+            <img src="/images/index/cafe_praha_sandwich_klassiker_mit_ei_und_schinken.jpg" alt="Frühstück im Café Praha" class="card-image-bg">
+            <div class="card-front-overlay">
+              <div class="card-top-pills">
+                <span class="pill-tag">🍳 Mo–So 9–11 Uhr</span>
+                <span class="card-flip-prompt">Details drehen ↻</span>
+              </div>
+              <div class="card-front-bottom">
+                <div class="card-category-eyebrow">Morgendlicher Zauber</div>
+                <h3 class="card-title-front">Frühstück &amp; Sandwich</h3>
+                <p class="card-teaser-quote">Der Café-Praha-Sandwich-Klassiker mit Ei und Schinken – ein Genuss!</p>
+              </div>
+            </div>
+          </div>
+          <div class="card-face card-back">
+            <div class="card-back-header">
+              <span class="pill-tag">Frühstückszeit</span>
+              <button class="turn-back-btn" onclick="event.stopPropagation(); flipCard(this.closest('.bento-card'))">Bild ↻</button>
+            </div>
+            <div class="card-back-body">
+              <h4 class="card-back-title">Ein guter Tag beginnt mit einem perfekten Frühstück</h4>
+              <p class="card-back-text">
+                Ob cremiges Rührei, ein perfekt gebratenes Spiegelei oder ein liebevoll arrangierter Frühstücksteller mit Käse, Schinken und frischen Beilagen – hier finden Sie den richtigen Einstieg in den Tag.
+              </p>
+              <div class="card-quote-callout">
+                „Beliebt und einzigartig: Unser Café Praha Sandwich – eine unwiderstehliche Kombination aus knusprigem Brot, herzhaftem Belag und fein abgestimmten Zutaten.“
+              </div>
+              <div class="card-badges-wrap">
+                <span class="pill-tag badge-highlight">Mo–So 9:00 – 11:00 Uhr</span>
+                <span class="pill-tag">Auch auf Vorreservierung</span>
+              </div>
+            </div>
+            <div class="card-back-footer">
+              <span style="font-size: 0.78rem; color: var(--color-gold-400);">Frisch gebraten &amp; serviert</span>
+              <button class="turn-back-btn" onclick="event.stopPropagation(); flipCard(this.closest('.bento-card'))">Kachel wenden ↻</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 4. Kuchen & Gebäck (Wide Card) -->
+        <div class="bento-card card-wide" onclick="flipCard(this)">
+          <div class="card-face card-front">
+            <img src="/images/index/suesse_kunstwerke_im_cafe_praha_in_zittau_geniessen.jpg" alt="Kuchen & Gebäck" class="card-image-bg">
+            <div class="card-front-overlay">
+              <div class="card-top-pills">
+                <span class="pill-tag badge-highlight">🍰 Böhmische Backkunst</span>
+                <span class="card-flip-prompt">Details drehen ↻</span>
+              </div>
+              <div class="card-front-bottom">
+                <div class="card-category-eyebrow">Süße Schatztruhe</div>
+                <h3 class="card-title-front">Kuchen &amp; Feingebäck</h3>
+                <p class="card-teaser-quote">Süße Verführung in jeder Schicht und unter jeder Haube.</p>
+              </div>
+            </div>
+          </div>
+          <div class="card-face card-back">
+            <div class="card-back-header">
+              <span class="pill-tag">Tschechische Konditorkunst</span>
+              <button class="turn-back-btn" onclick="event.stopPropagation(); flipCard(this.closest('.bento-card'))">Bild ↻</button>
+            </div>
+            <div class="card-back-body">
+              <h4 class="card-back-title">Süße Kunstwerke &amp; Stücke vom Glück</h4>
+              <p class="card-back-text">
+                Unsere Kuchentheke gleicht einer süßen Schatztruhe: zartschmelzende Torten, luftig-leichte Cremeschnitten, feine Blätterteiggebäcke und knusprige Nusskörbchen warten darauf, entdeckt zu werden.
+              </p>
+              <div class="card-quote-callout">
+                „Klassiker wie die sahnige Florida-Torte, die legendäre Sachertorte oder die unwiderstehlichen Pariser Waffelröllchen laden zum Genießen ein. Wer es knusprig liebt, wird an den zarten Mandelgebäcken oder den mit Schokolade verfeinerten Windmühlen nicht vorbeikommen.“
+              </div>
+              <div class="card-badges-wrap">
+                <span class="pill-tag">Florida-Torte</span>
+                <span class="pill-tag">Sachertorte</span>
+                <span class="pill-tag">Pariser Waffelröllchen</span>
+                <span class="pill-tag">Böhmische Schnecken</span>
+                <span class="pill-tag">Windmühlen</span>
+              </div>
+            </div>
+            <div class="card-back-footer">
+              <span style="font-size: 0.78rem; color: var(--color-gold-400);">Täglich frisch aus der Backstube</span>
+              <button class="turn-back-btn" onclick="event.stopPropagation(); flipCard(this.closest('.bento-card'))">Kachel wenden ↻</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 5. Eis & Eierkuchen (Kompakt) -->
+        <div class="bento-card" onclick="flipCard(this)">
+          <div class="card-face card-front">
+            <img src="/images/index/schleck_das_glueck_eisbecher_cafe_praha.jpg" alt="Eisbecher im Café Praha" class="card-image-bg">
+            <div class="card-front-overlay">
+              <div class="card-top-pills">
+                <span class="pill-tag">🍨 Schleck das Glück</span>
+                <span class="card-flip-prompt">Details drehen ↻</span>
+              </div>
+              <div class="card-front-bottom">
+                <div class="card-category-eyebrow">Kühle Momente</div>
+                <h3 class="card-title-front">Eis &amp; Eierkuchen-Oase</h3>
+                <p class="card-teaser-quote">Ein Löffel voll cremiger Vanille und purem Glück.</p>
+              </div>
+            </div>
+          </div>
+          <div class="card-face card-back">
+            <div class="card-back-header">
+              <span class="pill-tag">Eis-Kreationen</span>
+              <button class="turn-back-btn" onclick="event.stopPropagation(); flipCard(this.closest('.bento-card'))">Bild ↻</button>
+            </div>
+            <div class="card-back-body">
+              <h4 class="card-back-title">Schleck das Glück – der Eisbecher im Café Praha</h4>
+              <p class="card-back-text">
+                Ein Löffel voll cremiger Vanille, das zarte Schmelzen von Schokolade auf der Zunge oder die erfrischende Säure sonnengereifter Früchte – Eis ist mehr als nur eine kühle Leckerei, es ist ein kleiner Moment des Glücks.
+              </p>
+              <div class="card-quote-callout">
+                „Eine Eierkuchen-Oase mit Vanilleeis erwartet dich im Café Praha.“
+              </div>
+              <p class="card-back-text">
+                Ob Nussbecher, Bananensplit oder saisonale Sorten – auch perfekt auf die Hand zum Schlendern!
+              </p>
+              <div class="card-badges-wrap">
+                <span class="pill-tag badge-highlight">Eierkuchen-Oase</span>
+                <span class="pill-tag">Eisbecher</span>
+                <span class="pill-tag">Eis auf die Hand</span>
+              </div>
+            </div>
+            <div class="card-back-footer">
+              <span style="font-size: 0.78rem; color: var(--color-gold-400);">Regelmäßig wechselnde Sorten</span>
+              <button class="turn-back-btn" onclick="event.stopPropagation(); flipCard(this.closest('.bento-card'))">Kachel wenden ↻</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 6. Mittagstisch (Kompakt) -->
+        <div class="bento-card" onclick="flipCard(this)">
+          <div class="card-face card-front">
+            <img src="/images/index/typisch_tschechisches_mittagessen_im_cafe_praha_zittau.jpg" alt="Mittagstisch im Café Praha" class="card-image-bg">
+            <div class="card-front-overlay">
+              <div class="card-top-pills">
+                <span class="pill-tag badge-alert">🍲 Wöchentlich neu</span>
+                <span class="card-flip-prompt">Details drehen ↻</span>
+              </div>
+              <div class="card-front-bottom">
+                <div class="card-category-eyebrow">Herzhafte Tradition</div>
+                <h3 class="card-title-front">Mittagstisch</h3>
+                <p class="card-teaser-quote">Typisch tschechisches Mittagessen – im Café Praha in Zittau.</p>
+              </div>
+            </div>
+          </div>
+          <div class="card-face card-back">
+            <div class="card-back-header">
+              <span class="pill-tag">Böhmische Küche</span>
+              <button class="turn-back-btn" onclick="event.stopPropagation(); flipCard(this.closest('.bento-card'))">Bild ↻</button>
+            </div>
+            <div class="card-back-body">
+              <h4 class="card-back-title">Typisch tschechisches Mittagessen in Zittau</h4>
+              <p class="card-back-text">
+                Wir servieren wöchentlich wechselnde tschechische Spezialitäten – traditionell, herzhaft und voller Geschmack. Lassen Sie sich überraschen und entdecken Sie neue Lieblingsgerichte aus der böhmischen Küche.
+              </p>
+              <div class="card-quote-callout" style="border-color: #ef4444; background: rgba(239, 68, 68, 0.12); color: #fca5a5;">
+                „Ab dem 01.10. wieder im Angebot – wechselnde böhmische Klassiker frisch gekocht.“
+              </div>
+              <div class="card-badges-wrap">
+                <span class="pill-tag badge-highlight">Wöchentlich wechselnd</span>
+                <span class="pill-tag">Herzhaft &amp; authentisch</span>
+              </div>
+            </div>
+            <div class="card-back-footer">
+              <span style="font-size: 0.78rem; color: var(--color-gold-400);">Frisch gekocht</span>
+              <button class="turn-back-btn" onclick="event.stopPropagation(); flipCard(this.closest('.bento-card'))">Kachel wenden ↻</button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ========================================================================
+         KONZEPT 2: GRAND CAFÉ EDITORIAL & MAGAZIN SPEISEKARTE (SPLIT-FLOW)
+         ======================================================================== -->
+    <section class="concept-panel" id="panelConcept2">
+      <div class="concept-help-banner">
+        <div>
+          <strong>Konzept 2: Editorial Magazin &amp; Speisekarten-Flow</strong>
+          <p style="font-size: 0.8rem; color: var(--color-crema); margin-top: 2px;">
+            Großzügige 50/50 Zick-Zack-Sektionen. Mobil extrem natürlich lesbar ohne Klickzwang! Inklusive interaktiver Kuchen-Fotoleiste.
+          </p>
+        </div>
+        <div class="pill-tag badge-highlight">100% Mobile Lesefluss</div>
+      </div>
+
+      <div class="editorial-container">
+
+        <!-- 1. Kaffeespezialitäten -->
+        <div class="editorial-row">
+          <div class="editorial-media">
+            <img src="/images/index/kaffeespezialitaeten_im_cafe_praha_von_klassisch_bis_aussergewoehnlich.jpg" alt="Kaffeespezialitäten" class="editorial-img">
+            <div class="editorial-media-badge">
+              <span>☕ Feinste Röstkunst aus Böhmen</span>
+            </div>
+          </div>
+          <div class="editorial-copy">
+            <div class="editorial-section-number">SPEZIALITÄT 01 • KAFFEEHAUS-KULTUR</div>
+            <h3 class="editorial-headline">Kaffeespezialitäten – von klassisch bis außergewöhnlich</h3>
+            <p class="editorial-text">
+              Ob klassischer Cappuccino, kräftiger Espresso oder ein samtiger Latte Macchiato mit besonderer Geschmacksnote – wir servieren Ihnen Kaffee, so wie Sie ihn lieben.
+            </p>
+            <div class="highlight-card">
+              <div class="highlight-card-title">Ein Moment der Ruhe</div>
+              <div class="highlight-card-desc">
+                Wie Karel Gott schon sang: Manchmal braucht es nur ein Stückchen Zucker mehr. Genießen Sie den betörenden Duft frisch gemahlener Bohnen in bester Kaffeehaustradition.
+              </div>
+            </div>
+            <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+              <span class="pill-tag">Espresso</span>
+              <span class="pill-tag">Cappuccino</span>
+              <span class="pill-tag">Wiener Melange</span>
+              <span class="pill-tag">Latte Macchiato</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 2. Baguettes & Chlebíčky (Row Reverse) -->
+        <div class="editorial-row row-reverse">
+          <div class="editorial-media">
+            <img src="/images/index/der_geschmack_tschechiens_auf_einer_kleinen_schnitte_in_zittau.jpg" alt="Chlebíčky" class="editorial-img">
+            <div class="editorial-media-badge">
+              <span>🥪 Böhmisches Nationalgericht</span>
+            </div>
+          </div>
+          <div class="editorial-copy">
+            <div class="editorial-section-number">SPEZIALITÄT 02 • TRADITIONELLE SCHNITTEN</div>
+            <h3 class="editorial-headline">Baguettes &amp; Chlebíčky – Der Geschmack Tschechiens</h3>
+            <p class="editorial-text">
+              Ein Café mit tschechischem Flair ohne <strong>Chlebíčky</strong>? Undenkbar! Die beliebten belegten Brote sind ein Klassiker bei uns – frisch, raffiniert und in verschiedenen Varianten erhältlich.
+            </p>
+            <div class="highlight-card">
+              <div class="highlight-card-title">Vielfalt auf der Schnitte &amp; im Baguette</div>
+              <div class="highlight-card-desc">
+                Ob mit feinem Eiersalat, saftigem Schinken, Käse oder würziger Debreziner – ein Muss für Kenner. Dazu frisch belegte Baguettes mit Hähnchen, Salami und Ei für den herzhaften Genuss zwischendurch.
+              </div>
+            </div>
+            <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+              <span class="pill-tag badge-highlight">Original Chlebíčky</span>
+              <span class="pill-tag">Frische Baguettes</span>
+              <span class="pill-tag">Ideal auch als Catering</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 3. Kuchen & Gebäck (Mit interaktiver Fotoleiste!) -->
+        <div class="editorial-row">
+          <div class="editorial-media">
+            <img id="editorialCakeMainImg" src="/images/index/suesse_kunstwerke_im_cafe_praha_in_zittau_geniessen.jpg" alt="Kuchen & Gebäck" class="editorial-img">
+            <div class="editorial-media-badge">
+              <span id="editorialCakeBadgeText">🍰 Süße Kunstwerke im Café Praha</span>
+            </div>
+          </div>
+          <div class="editorial-copy">
+            <div class="editorial-section-number">SPEZIALITÄT 03 • KONDITORMEISTERWERKE</div>
+            <h3 class="editorial-headline">Kuchen &amp; Gebäck – Süße Schatztruhe</h3>
+            <p class="editorial-text">
+              Unsere Kuchentheke gleicht einer süßen Schatztruhe: zartschmelzende Torten, luftig-leichte Cremeschnitten, feine Blätterteiggebäcke und knusprige Nusskörbchen warten darauf, entdeckt zu werden.
+            </p>
+            <div class="highlight-card">
+              <div class="highlight-card-title">Klassiker der böhmischen Backkunst</div>
+              <div class="highlight-card-desc">
+                Sahnige Florida-Torte, legendäre Sachertorte, unwiderstehliche Pariser Waffelröllchen, zarte Mandelgebäcke und schokoladenfeine Windmühlen.
+              </div>
+            </div>
+
+            <!-- Interactive Cake Thumbnails Switcher -->
+            <p style="font-size: 0.8rem; color: var(--color-gold-400); margin-top: 0.5rem;">
+              Klicke auf die Fotomotive unserer Backstube:
+            </p>
+            <div class="cake-gallery-thumbs">
+              <button class="thumb-btn active" onclick="switchCakePhoto(this, '/images/index/suesse_kunstwerke_im_cafe_praha_in_zittau_geniessen.jpg', 'Süße Kunstwerke im Café Praha')">
+                <img src="/images/index/suesse_kunstwerke_im_cafe_praha_in_zittau_geniessen.jpg" alt="Süße Kunstwerke">
+              </button>
+              <button class="thumb-btn" onclick="switchCakePhoto(this, '/images/index/blumig_fruchtige_genussmomente_im_cafe_praha_in_zittau.jpg', 'Blumig-fruchtige Genussmomente')">
+                <img src="/images/index/blumig_fruchtige_genussmomente_im_cafe_praha_in_zittau.jpg" alt="Blumig fruchtig">
+              </button>
+              <button class="thumb-btn" onclick="switchCakePhoto(this, '/images/index/darf_es_ein_stueck_glueck_aus_dem_cafe_praha_sein.jpg', 'Darf es ein Stück Glück sein?')">
+                <img src="/images/index/darf_es_ein_stueck_glueck_aus_dem_cafe_praha_sein.jpg" alt="Ein Stück Glück">
+              </button>
+              <button class="thumb-btn" onclick="switchCakePhoto(this, '/images/index/kleine_schnecken_fuer_grosse_gluecksmomente_im_cafe_praha.jpg', 'Kleine Schnecken für große Momente')">
+                <img src="/images/index/kleine_schnecken_fuer_grosse_gluecksmomente_im_cafe_praha.jpg" alt="Böhmische Schnecken">
+              </button>
+              <button class="thumb-btn" onclick="switchCakePhoto(this, '/images/index/suesse_verfuehrung_in_jeder_schicht_und_unter_jeder_haube_cafe_praha_zittau.jpg', 'Süße Verführung in jeder Schicht')">
+                <img src="/images/index/suesse_verfuehrung_in_jeder_schicht_und_unter_jeder_haube_cafe_praha_zittau.jpg" alt="Schichttorten">
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 4. Frühstück & Café Praha Sandwich (Row Reverse) -->
+        <div class="editorial-row row-reverse">
+          <div class="editorial-media">
+            <img src="/images/index/cafe_praha_sandwich_klassiker_mit_ei_und_schinken.jpg" alt="Frühstück" class="editorial-img">
+            <div class="editorial-media-badge">
+              <span>🍳 Mo–So 9:00 bis 11:00 Uhr</span>
+            </div>
+          </div>
+          <div class="editorial-copy">
+            <div class="editorial-section-number">SPEZIALITÄT 04 • FRÜHSTÜCK &amp; SANDWICH</div>
+            <h3 class="editorial-headline">Ein guter Tag beginnt mit Genuss &amp; Gemütlichkeit</h3>
+            <p class="editorial-text">
+              Ob klassisch, herzhaft oder leicht – im Café Praha starten Sie mit einer Auswahl, die keine Wünsche offenlässt.
+            </p>
+            <div class="highlight-card">
+              <div class="highlight-card-title">Geheimtipp: Unser Café Praha Sandwich</div>
+              <div class="highlight-card-desc">
+                Cremiges Rührei, liebevoll angerichtete Frühstücksteller mit Käse und feinem Schinken oder unser knuspriges Signature Sandwich mit Ei – unkompliziert, aber unvergleichlich köstlich.
+              </div>
+            </div>
+            <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+              <span class="pill-tag badge-highlight">Mo–So 9:00 – 11:00 Uhr</span>
+              <span class="pill-tag">Spiegelei &amp; Rührei</span>
+              <span class="pill-tag">Frühstücksteller</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 5. Eis & Eierkuchen-Oase -->
+        <div class="editorial-row">
+          <div class="editorial-media">
+            <img src="/images/index/schleck_das_glueck_eisbecher_cafe_praha.jpg" alt="Eisbecher" class="editorial-img">
+            <div class="editorial-media-badge">
+              <span>🍨 Schleck das Glück – Eisbecher &amp; Eierkuchen</span>
+            </div>
+          </div>
+          <div class="editorial-copy">
+            <div class="editorial-section-number">SPEZIALITÄT 05 • EIS-KREATIONEN</div>
+            <h3 class="editorial-headline">Schleck das Glück – der Eisbecher im Café Praha</h3>
+            <p class="editorial-text">
+              Ein Löffel voll cremiger Vanille, das zarte Schmelzen von Schokolade auf der Zunge oder die erfrischende Säure sonnengereifter Früchte – Eis ist mehr als nur eine kühle Leckerei, es ist ein kleiner Moment des Glücks.
+            </p>
+            <div class="highlight-card">
+              <div class="highlight-card-title">Eierkuchen-Oase &amp; Eis auf die Hand</div>
+              <div class="highlight-card-desc">
+                Eine Eierkuchen-Oase mit Vanilleeis erwartet dich bei uns. Unser Eissortiment wechselt regelmäßig mit neuen Sorten – und für Eilige gibt es Eis natürlich auch auf die Hand zum Weiterschlendern!
+              </div>
+            </div>
+            <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+              <span class="pill-tag">Nussbecher</span>
+              <span class="pill-tag">Bananensplit</span>
+              <span class="pill-tag badge-highlight">Eierkuchen-Oase</span>
+              <span class="pill-tag">Eis auf die Hand</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 6. Mittagstisch (Row Reverse) -->
+        <div class="editorial-row row-reverse">
+          <div class="editorial-media">
+            <img src="/images/index/typisch_tschechisches_mittagessen_im_cafe_praha_zittau.jpg" alt="Mittagstisch" class="editorial-img">
+            <div class="editorial-media-badge">
+              <span>🍲 Böhmische Mittagsgerichte</span>
+            </div>
+          </div>
+          <div class="editorial-copy">
+            <div class="editorial-section-number">SPEZIALITÄT 06 • BÖHMISCHER MITTAGSTISCH</div>
+            <h3 class="editorial-headline">Typisch tschechisches Mittagessen in Zittau</h3>
+            <p class="editorial-text">
+              Wir servieren wöchentlich wechselnde tschechische Spezialitäten – traditionell, herzhaft und voller Geschmack. Lassen Sie sich überraschen und entdecken Sie neue Lieblingsgerichte aus der böhmischen Küche.
+            </p>
+            <div class="highlight-card" style="border-left-color: #ef4444;">
+              <div class="highlight-card-title" style="color: #fca5a5;">Saison-Hinweis &amp; Speiseplan</div>
+              <div class="highlight-card-desc">
+                <strong>Ab dem 01.10. wieder im Angebot.</strong> Jede Woche frisch gekochte böhmische Klassiker, Knödelvariationen und deftige Soßen nach Originalrezept.
+              </div>
+            </div>
+            <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+              <span class="pill-tag badge-alert">Ab 01.10. wieder im Angebot</span>
+              <span class="pill-tag">Wöchentlich wechselnd</span>
+              <span class="pill-tag">Reservierung empfohlen</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ========================================================================
+         KONZEPT 3: INTERAKTIVE GENUSS-LOUNGE & STORY-SLIDER
+         ======================================================================== -->
+    <section class="concept-panel" id="panelConcept3">
+      <div class="concept-help-banner">
+        <div>
+          <strong>Konzept 3: Interaktive Genuss-Lounge &amp; Story-Slider</strong>
+          <p style="font-size: 0.8rem; color: var(--color-crema); margin-top: 2px;">
+            Kompakt &amp; App-Style: Wähle die Kategorie im Floating Dock oben, die Bühne wechselt kinoreif.
+          </p>
+        </div>
+        <div class="pill-tag badge-highlight">Kinoreife Spotlight-Bühne</div>
+      </div>
+
+      <div class="lounge-container">
+        
+        <!-- Category Floating Dock -->
+        <nav class="lounge-nav-dock" id="loungeNav">
+          <button class="lounge-nav-item active" onclick="selectLoungeCategory(0)">
+            <span>☕</span> <span>Kaffee</span>
+          </button>
+          <button class="lounge-nav-item" onclick="selectLoungeCategory(1)">
+            <span>🥪</span> <span>Chlebíčky</span>
+          </button>
+          <button class="lounge-nav-item" onclick="selectLoungeCategory(2)">
+            <span>🍰</span> <span>Kuchen &amp; Torten</span>
+          </button>
+          <button class="lounge-nav-item" onclick="selectLoungeCategory(3)">
+            <span>🍳</span> <span>Frühstück</span>
+          </button>
+          <button class="lounge-nav-item" onclick="selectLoungeCategory(4)">
+            <span>🍨</span> <span>Eis &amp; Eierkuchen</span>
+          </button>
+          <button class="lounge-nav-item" onclick="selectLoungeCategory(5)">
+            <span>🍲</span> <span>Mittagstisch</span>
+          </button>
+        </nav>
+
+        <!-- Central Stage -->
+        <div class="lounge-stage">
+          
+          <!-- Media Column (Left) -->
+          <div class="lounge-media-column">
+            <img id="loungeMainImg" src="/images/index/kaffeespezialitaeten_im_cafe_praha_von_klassisch_bis_aussergewoehnlich.jpg" alt="Kategorie Bild" class="lounge-main-img">
+            <div class="lounge-media-overlay"></div>
+            <div class="lounge-badge-overlay">
+              <span class="pill-tag badge-highlight" id="loungeBadgeTop">☕ Prager Röstung</span>
+            </div>
+          </div>
+
+          <!-- Content Column (Right) -->
+          <div class="lounge-content-column">
+            <div>
+              <div class="lounge-header-group">
+                <div class="lounge-category-pill" id="loungeEyebrow">KATEGORIE 1 VON 6</div>
+                <h3 class="lounge-title" id="loungeTitle">Kaffeespezialitäten im Café Praha – von klassisch bis außergewöhnlich</h3>
+              </div>
+
+              <p class="lounge-desc" id="loungeDesc">
+                Ob klassischer Cappuccino, kräftiger Espresso oder einen Latte Macchiato mit besonderer Geschmacksnote – wir servieren Ihnen Kaffee, so wie Sie ihn lieben.
+              </p>
+
+              <!-- Dynamic Feature List -->
+              <div class="lounge-features-list" id="loungeFeatures">
+                <div class="lounge-feature-item">
+                  <div class="feature-icon-bullet">✓</div>
+                  <span>Traditionelle Röstungen &amp; feine Milchschaumkunst</span>
+                </div>
+                <div class="lounge-feature-item">
+                  <div class="feature-icon-bullet">✓</div>
+                  <span>Ein Moment der Ruhe inspiriert von Karel Gott</span>
+                </div>
+                <div class="lounge-feature-item">
+                  <div class="feature-icon-bullet">✓</div>
+                  <span>Perfekt kombinierbar mit böhmischen Torten</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Bottom Action Row -->
+            <div class="lounge-bottom-bar">
+              <a href="tel:+4935837964364" class="lounge-cta-btn">
+                <span>Tisch reservieren</span>
+                <span>→</span>
+              </a>
+
+              <!-- Arrow Step Buttons -->
+              <div class="lounge-step-arrows">
+                <button class="arrow-step-btn" onclick="stepLounge(-1)" title="Vorherige Spezialität">←</button>
+                <button class="arrow-step-btn" onclick="stepLounge(1)" title="Nächste Spezialität">→</button>
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ========================================================================
+         KONZEPT-VERGLEICH & EMPFEHLUNG FÜR DEN RELAUNCH
+         ======================================================================== -->
+    <div class="comparison-section">
+      <h3 class="comparison-title">Direkter Vergleich der 3 Ansätze für Café Praha</h3>
+      
+      <div style="overflow-x: auto;">
+        <table class="comparison-table">
+          <thead>
+            <tr>
+              <th>Kriterium</th>
+              <th>Konzept 1: 3D-Bento Flip-Cards</th>
+              <th>Konzept 2: Editorial Magazin-Flow</th>
+              <th>Konzept 3: Lounge &amp; Story-Slider</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Visueller Ersteindruck</strong></td>
+              <td>Sehr modern, spielerisch, Bento-Grid Look mit 3D-Tiefenwirkung.</td>
+              <td>Extrem edel, warm, wie ein Michelin-Guide oder Prager Luxus-Journal.</td>
+              <td>Kinoreif, kompakt, wie ein digitaler Showroom einer Spitzenmarke.</td>
+            </tr>
+            <tr>
+              <td><strong>Mobile Nutzererfahrung</strong></td>
+              <td>Lösbar durch <em>Tap-to-Flip</em> oder <em>Sheet-Drawer</em>. Erfordert Klick/Tap.</td>
+              <td><strong>Herausragend &amp; fehlerfrei:</strong> Natürlicher Lesefluss beim Scrollen, keine Klick-Hürde.</td>
+              <td>Sehr platzsparend, schnelles Swipen zwischen den 6 Spezialitäten.</td>
+            </tr>
+            <tr>
+              <td><strong>Mehrfach-Bilder (z.B. Torten)</strong></td>
+              <td>Schwierig in einer Kachel, man muss Text und Bilder komprimieren.</td>
+              <td><strong>Perfekt:</strong> Ermöglicht interaktive Thumbnail-Galerie für die 5 Kuchenbilder!</td>
+              <td>Sehr gut über Mini-Dots oder Galerie-Reiter lösbar.</td>
+            </tr>
+            <tr>
+              <td><strong>Text-Komfort</strong></td>
+              <td>Guter Kurztext auf der Rückseite, bei sehr viel Text muss gescrollt werden.</td>
+              <td>Höchste Lesbarkeit für ausführliche Genussbeschreibungen.</td>
+              <td>Strukturiert in Bulletpoints und Kern-Absätze aufgeteilt.</td>
+            </tr>
+            <tr>
+              <td><strong>Empfohlener Einsatzzweck</strong></td>
+              <td>Ideal für junge, interaktive Zielgruppen &amp; Design-Liebhaber.</td>
+              <td><strong>Empfehlung für Café Praha:</strong> Höchste Aufenthaltsqualität für Genießer jeden Alters.</td>
+              <td>Perfekt für kompakte Landingpages mit geringer Seitenhöhe.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- ==========================================================================
+       SCRIPTS: INTERAKTIVITÄT, CANVAS & KONZEPT-WECHSEL
+       ========================================================================== -->
+  <script>
+    // 1. Concept Switching
+    function switchConcept(conceptId) {
+      document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.getAttribute('data-concept') == conceptId);
+      });
+      document.querySelectorAll('.concept-panel').forEach(panel => {
+        panel.classList.remove('active');
+      });
+      const activePanel = document.getElementById('panelConcept' + conceptId);
+      if (activePanel) {
+        activePanel.classList.add('active');
+      }
+    }
+
+    // 2. Viewport Simulator
+    function setDeviceView(device, btn) {
+      const stage = document.getElementById('stageWrapper');
+      const indicator = document.getElementById('deviceIndicator');
+      document.querySelectorAll('.device-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+
+      stage.classList.remove('view-tablet', 'view-mobile');
+      if (device === 'tablet') {
+        stage.classList.add('view-tablet');
+        indicator.textContent = 'Simulierte Tablet-Ansicht (768px Viewport) – iPad & Tablet Layout';
+      } else if (device === 'mobile') {
+        stage.classList.add('view-mobile');
+        indicator.textContent = 'Simulierte Smartphone-Ansicht (390px Viewport) – Teste Touch-Verhalten & Lesbarkeit!';
+      }
+    }
+
+    // 3. Concept 1: Card Flip Mechanic
+    function flipCard(cardEl) {
+      if (document.getElementById('bentoContainer').classList.contains('mode-sheet-drawer')) {
+        cardEl.classList.toggle('is-sheet-open');
+      } else {
+        cardEl.classList.toggle('is-flipped');
+      }
+    }
+
+    // Toggle between 3D Flip Mode and Sheet Drawer Mode for Mobile
+    let isSheetMode = false;
+    function toggleFlipMode() {
+      isSheetMode = !isSheetMode;
+      const bento = document.getElementById('bentoContainer');
+      const label = document.getElementById('flipModeLabel');
+      if (isSheetMode) {
+        bento.classList.add('mode-sheet-drawer');
+        label.textContent = 'Modus: Mobile Sheet-Drawer ↕';
+        // Reset flipped state
+        document.querySelectorAll('.bento-card').forEach(c => c.classList.remove('is-flipped'));
+      } else {
+        bento.classList.remove('mode-sheet-drawer');
+        label.textContent = 'Modus: 3D Tap-to-Flip ↻';
+        document.querySelectorAll('.bento-card').forEach(c => c.classList.remove('is-sheet-open'));
+      }
+    }
+
+    // 4. Concept 2: Cake Photo Switcher
+    function switchCakePhoto(btn, imgSrc, caption) {
+      document.querySelectorAll('.thumb-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const img = document.getElementById('editorialCakeMainImg');
+      const badge = document.getElementById('editorialCakeBadgeText');
+      img.style.opacity = '0.3';
+      setTimeout(() => {
+        img.src = imgSrc;
+        img.style.opacity = '1';
+        badge.textContent = '🍰 ' + caption;
+      }, 150);
+    }
+
+    // 5. Concept 3: Lounge Stage Data & Navigation
+    const loungeCategories = [
+      {
+        eyebrow: "KATEGORIE 1 VON 6 • PRAGER RÖSTUNG",
+        title: "Kaffeespezialitäten – von klassisch bis außergewöhnlich",
+        desc: "Ob klassischer Cappuccino, kräftiger Espresso oder einen Latte Macchiato mit besonderer Geschmacksnote – wir servieren Ihnen Kaffee, so wie Sie ihn lieben. Fein abgestimmte Bohnen mit samtiger Crema.",
+        badge: "☕ Handgeröstet & Vollmundig",
+        image: "/images/index/kaffeespezialitaeten_im_cafe_praha_von_klassisch_bis_aussergewoehnlich.jpg",
+        features: [
+          "Traditionelle Röstungen & feine Milchschaumkunst",
+          "Ein Moment der Ruhe inspiriert von Karel Gott",
+          "Perfekt kombinierbar mit böhmischen Torten"
+        ]
+      },
+      {
+        eyebrow: "KATEGORIE 2 VON 6 • BÖHMISCHER NATIONALSTOLZ",
+        title: "Baguettes & Chlebíčky – Auf einer kleinen Schnitte in Zittau",
+        desc: "Ein Café mit tschechischem Flair ohne Chlebíčky? Undenkbar! Die beliebten belegten Brote sind ein Klassiker bei uns – frisch, raffiniert und in verschiedenen Varianten erhältlich. Ob Eiersalat, Schinken oder würzige Debreziner.",
+        badge: "🥪 Frische Delikatesse",
+        image: "/images/index/der_geschmack_tschechiens_auf_einer_kleinen_schnitte_in_zittau.jpg",
+        features: [
+          "Frisch belegte Chlebíčky mit Eiersalat & Prager Schinken",
+          "Knusprige Baguettes mit Hähnchen, Käse, Ei & Salami",
+          "Perfekt für den herzhaften Genuss oder fürs Catering"
+        ]
+      },
+      {
+        eyebrow: "KATEGORIE 3 VON 6 • SÜSSE SCHATZTRUHE",
+        title: "Kuchen & Gebäck – Böhmische Konditorkunst",
+        desc: "Unsere Kuchentheke gleicht einer süßen Schatztruhe: zartschmelzende Torten, luftig-leichte Cremeschnitten, feine Blätterteiggebäcke und knusprige Nusskörbchen warten darauf, entdeckt zu werden.",
+        badge: "🍰 Meisterhafte Backstube",
+        image: "/images/index/suesse_kunstwerke_im_cafe_praha_in_zittau_geniessen.jpg",
+        features: [
+          "Klassiker wie Florida-Torte, Sachertorte & Pariser Waffelröllchen",
+          "Kleine Schnecken für große Glücksmomente & Mandelgebäck",
+          "Blumig-fruchtige Genussmomente in jeder Schicht"
+        ]
+      },
+      {
+        eyebrow: "KATEGORIE 4 VON 6 • GUTER MORGEN",
+        title: "Frühstück & der Café-Praha-Sandwich-Klassiker",
+        desc: "Ein guter Tag beginnt mit einem Frühstück, das keine Wünsche offenlässt. Cremiges Rührei, Spiegelei oder unser beliebtes Café Praha Sandwich – eine unwiderstehliche Kombination aus knusprigem Brot und feinem Belag.",
+        badge: "🍳 Mo–So von 9:00 – 11:00 Uhr",
+        image: "/images/index/cafe_praha_sandwich_klassiker_mit_ei_und_schinken.jpg",
+        features: [
+          "Frisch zubereitetes Rührei & Spiegelei",
+          "Liebevoll arrangierte Frühstücksteller mit Käse & Schinken",
+          "Täglich von 9:00 bis 11:00 Uhr oder auf Vorreservierung"
+        ]
+      },
+      {
+        eyebrow: "KATEGORIE 5 VON 6 • KÜHLE LECKEREIEN",
+        title: "Schleck das Glück – Eisbecher & Eierkuchen-Oase",
+        desc: "Ein Löffel voll cremiger Vanille, das zarte Schmelzen von Schokolade auf der Zunge oder erfrischende Früchte. Dazu unsere einzigartige Eierkuchen-Oase mit Vanilleeis im Café Praha.",
+        badge: "🍨 Regelmäßig wechselnde Sorten",
+        image: "/images/index/schleck_das_glueck_eisbecher_cafe_praha.jpg",
+        features: [
+          "Klassische Nussbecher & fruchtige Bananensplits",
+          "Exklusive Eierkuchen-Oase mit Vanilleeis",
+          "Eis auf die Hand zum Schlendern durch Zittau"
+        ]
+      },
+      {
+        eyebrow: "KATEGORIE 6 VON 6 • TRADITIONELLE KÜCHE",
+        title: "Mittagstisch – Typisch tschechisches Mittagessen",
+        desc: "Wir servieren wöchentlich wechselnde tschechische Spezialitäten – traditionell, herzhaft und voller Geschmack. Lassen Sie sich überraschen und entdecken Sie neue Lieblingsgerichte aus der böhmischen Küche.",
+        badge: "🍲 Ab 01.10. wieder im Angebot",
+        image: "/images/index/typisch_tschechisches_mittagessen_im_cafe_praha_zittau.jpg",
+        features: [
+          "Wöchentlich wechselnde böhmische Traditionsgerichte",
+          "Deftige Soßen, böhmische Knödel & herzhafter Fleischgenuss",
+          "Wieder im Angebot ab dem 01.10."
+        ]
+      }
+    ];
+
+    let currentLoungeIndex = 0;
+
+    function selectLoungeCategory(index) {
+      currentLoungeIndex = index;
+      const data = loungeCategories[index];
+
+      // Update Nav Buttons
+      const navBtns = document.querySelectorAll('.lounge-nav-item');
+      navBtns.forEach((b, i) => b.classList.toggle('active', i === index));
+
+      // Elements
+      const img = document.getElementById('loungeMainImg');
+      const badge = document.getElementById('loungeBadgeTop');
+      const eyebrow = document.getElementById('loungeEyebrow');
+      const title = document.getElementById('loungeTitle');
+      const desc = document.getElementById('loungeDesc');
+      const features = document.getElementById('loungeFeatures');
+
+      // Fade Transition
+      img.style.opacity = '0.2';
+      img.style.transform = 'scale(0.97)';
+
+      setTimeout(() => {
+        img.src = data.image;
+        badge.textContent = data.badge;
+        eyebrow.textContent = data.eyebrow;
+        title.textContent = data.title;
+        desc.textContent = data.desc;
+
+        // Render features
+        features.innerHTML = data.features.map(f => `
+          <div class="lounge-feature-item">
+            <div class="feature-icon-bullet">✓</div>
+            <span>${f}</span>
+          </div>
+        `).join('');
+
+        img.style.opacity = '1';
+        img.style.transform = 'scale(1)';
+      }, 200);
+    }
+
+    function stepLounge(direction) {
+      let nextIndex = currentLoungeIndex + direction;
+      if (nextIndex < 0) nextIndex = loungeCategories.length - 1;
+      if (nextIndex >= loungeCategories.length) nextIndex = 0;
+      selectLoungeCategory(nextIndex);
+    }
+
+    // 6. Ambient Particle Canvas Animation
+    (function initParticles() {
+      const canvas = document.getElementById('coffee-particles');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      let width = canvas.width = window.innerWidth;
+      let height = canvas.height = window.innerHeight;
+
+      window.addEventListener('resize', () => {
+        width = canvas.width = window.innerWidth;
+        height = canvas.height = window.innerHeight;
+      });
+
+      const particles = [];
+      const particleCount = 28;
+
+      for (let i = 0; i < particleCount; i++) {
+        particles.push({
+          x: Math.random() * width,
+          y: Math.random() * height,
+          radius: Math.random() * 2 + 0.8,
+          speedY: -(Math.random() * 0.4 + 0.15),
+          speedX: (Math.random() - 0.5) * 0.25,
+          opacity: Math.random() * 0.5 + 0.2,
+          color: Math.random() > 0.4 ? 'rgba(244, 205, 157, ' : 'rgba(197, 155, 103, '
+        });
+      }
+
+      function render() {
+        ctx.clearRect(0, 0, width, height);
+        particles.forEach(p => {
+          p.y += p.speedY;
+          p.x += p.speedX;
+          if (p.y < -10) {
+            p.y = height + 10;
+            p.x = Math.random() * width;
+          }
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+          ctx.fillStyle = p.color + p.opacity + ')';
+          ctx.shadowBlur = 10;
+          ctx.shadowColor = 'rgba(197, 155, 103, 0.4)';
+          ctx.fill();
+        });
+        requestAnimationFrame(render);
+      }
+      render();
+    })();
+  </script>
+</body>
+</html>
