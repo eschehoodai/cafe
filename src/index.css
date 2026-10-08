@@ -369,6 +369,7 @@ video {
   display: flex;
   align-items: center;
   gap: 0.6rem;
+  flex-shrink: 0;
 }
 
 .dock-phone-btn {
@@ -407,6 +408,7 @@ video {
   box-shadow: 0 4px 15px rgba(244, 205, 157, 0.35);
   transition: all var(--transition-fast);
   white-space: nowrap;
+  flex-shrink: 0;
 }
 
 .dock-cta-btn:hover {
@@ -427,6 +429,7 @@ video {
   justify-content: center;
   cursor: pointer;
   transition: all var(--transition-fast);
+  flex-shrink: 0;
 }
 
 .dock-burger-btn:hover {
@@ -1273,6 +1276,20 @@ video {
    RESPONSIVE QUERIES
    ===================================================================== */
 @media (max-width: 960px) {
+  .site-header-dock-wrap {
+    padding: 0.75rem 0.75rem;
+  }
+
+  .site-header-dock-wrap.scrolled {
+    padding: 0.5rem 0.75rem;
+  }
+
+  .site-header-dock-wrap .container {
+    padding-left: 0;
+    padding-right: 0;
+    max-width: 100%;
+  }
+
   .dock-nav-items {
     display: none;
   }
@@ -1283,12 +1300,31 @@ video {
 
   .dock-burger-btn {
     display: flex;
+    flex-shrink: 0;
   }
 
   .espresso-dock {
     width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
     justify-content: space-between;
-    padding: 0.45rem 0.8rem;
+    padding: 0.4rem 0.75rem;
+    gap: 0.6rem;
+  }
+
+  .dock-brand-btn {
+    flex-shrink: 1;
+    min-width: 0;
+  }
+
+  .dock-actions {
+    gap: 0.5rem;
+    flex-shrink: 0;
+  }
+
+  .dock-cta-btn {
+    padding: 0.5rem 0.95rem;
+    font-size: 0.85rem;
   }
 
   .video-control-pill {
@@ -1297,10 +1333,52 @@ video {
   }
 }
 
-
 @media (max-width: 640px) {
   :root {
-    --header-height: 74px;
+    --header-height: 70px;
+  }
+
+  .site-header-dock-wrap {
+    padding: 0.6rem 0.45rem;
+  }
+
+  .site-header-dock-wrap.scrolled {
+    padding: 0.4rem 0.45rem;
+  }
+
+  .espresso-dock {
+    padding: 0.35rem 0.55rem;
+    gap: 0.45rem;
+  }
+
+  .dock-brand-btn {
+    padding: 0.4rem 0.85rem;
+    gap: 0.55rem;
+  }
+
+  .dock-brand-name {
+    font-size: 1rem;
+  }
+
+  .cup-svg-box,
+  .steaming-cup-svg {
+    width: 24px;
+    height: 24px;
+  }
+
+  .dock-actions {
+    gap: 0.4rem;
+  }
+
+  .dock-cta-btn {
+    padding: 0.44rem 0.8rem;
+    font-size: 0.82rem;
+    gap: 0.3rem;
+  }
+
+  .dock-burger-btn {
+    width: 38px;
+    height: 38px;
   }
 
   .hero-quote-card {
@@ -1340,6 +1418,144 @@ video {
 
   .badge-val {
     font-size: 0.8rem;
+  }
+}
+
+@media (max-width: 440px) {
+  .site-header-dock-wrap {
+    padding: 0.5rem 0.35rem;
+  }
+
+  .site-header-dock-wrap.scrolled {
+    padding: 0.35rem 0.35rem;
+  }
+
+  .espresso-dock {
+    padding: 0.32rem 0.45rem;
+    gap: 0.35rem;
+  }
+
+  .dock-brand-btn {
+    padding: 0.36rem 0.65rem;
+    gap: 0.45rem;
+  }
+
+  .dock-brand-name {
+    font-size: 0.94rem;
+  }
+
+  .cup-svg-box,
+  .steaming-cup-svg {
+    width: 22px;
+    height: 22px;
+  }
+
+  .dock-actions {
+    gap: 0.35rem;
+  }
+
+  .dock-cta-btn {
+    padding: 0.4rem 0.68rem;
+    font-size: 0.8rem;
+    gap: 0.25rem;
+  }
+
+  .dock-burger-btn {
+    width: 36px;
+    height: 36px;
+  }
+
+  .mobile-nav-drawer {
+    width: min(380px, 94vw);
+    padding: 1.25rem 1.1rem 1.35rem;
+    padding-bottom: max(1.25rem, env(safe-area-inset-bottom));
+  }
+
+  .mobile-drawer-header {
+    margin-bottom: 0.85rem;
+    padding-bottom: 0.65rem;
+  }
+
+  .mobile-drawer-body {
+    gap: 0.9rem;
+  }
+
+  .mobile-drawer-links {
+    gap: 0.5rem;
+  }
+
+  .mobile-nav-card {
+    padding: 0.72rem 0.85rem;
+    gap: 0.7rem;
+  }
+
+  .mobile-nav-card-title {
+    font-size: 1rem;
+  }
+
+  .mobile-nav-card-icon {
+    width: 32px;
+    height: 32px;
+  }
+
+  .mobile-hours-card {
+    padding: 0.75rem 0.85rem;
+    gap: 0.55rem;
+  }
+
+  .mobile-hours-rows {
+    gap: 0.3rem;
+  }
+
+  .mobile-reserve-btn {
+    padding: 0.78rem 1rem;
+    font-size: 0.9rem;
+  }
+
+  .mobile-phone-btn {
+    padding: 0.65rem 0.85rem;
+    font-size: 0.78rem;
+  }
+}
+
+@media (max-width: 360px) {
+  .site-header-dock-wrap {
+    padding: 0.4rem 0.25rem;
+  }
+
+  .espresso-dock {
+    padding: 0.28rem 0.35rem;
+    gap: 0.25rem;
+  }
+
+  .dock-brand-btn {
+    padding: 0.3rem 0.5rem;
+    gap: 0.35rem;
+  }
+
+  .dock-brand-name {
+    font-size: 0.88rem;
+  }
+
+  .cup-svg-box,
+  .steaming-cup-svg {
+    width: 20px;
+    height: 20px;
+  }
+
+  .dock-actions {
+    gap: 0.25rem;
+  }
+
+  .dock-cta-btn {
+    padding: 0.36rem 0.55rem;
+    font-size: 0.75rem;
+    gap: 0.2rem;
+  }
+
+  .dock-burger-btn {
+    width: 34px;
+    height: 34px;
   }
 }
 

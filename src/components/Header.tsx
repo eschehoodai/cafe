@@ -207,7 +207,7 @@ export const Header: React.FC<HeaderProps> = ({ currentView = 'cafe', onNavigate
                   }
                 }}
               >
-                <span>Reservieren</span>
+                <span className="dock-cta-text">Reservieren</span>
                 <ArrowUpRight size={15} />
               </a>
 
