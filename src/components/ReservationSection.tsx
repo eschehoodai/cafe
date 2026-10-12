@@ -9,10 +9,7 @@ import {
   CheckCircle2,
   Sparkles,
   ArrowRight,
-  CalendarCheck,
   RefreshCw,
-  Timer,
-  Coffee,
   RotateCcw,
 } from 'lucide-react';
 import { CAFE_INFO } from '../data/cafeData';
@@ -130,22 +127,11 @@ export const ReservationSection: React.FC = () => {
     const newErrors: { [key: string]: string } = {};
 
     if (!fullName.trim() || fullName.trim().length < 2) {
-      newErrors.fullName = 'Bitte geben Sie Ihren Namen an (mind. 2 Zeichen).';
+      newErrors.fullName = 'Bitte geben Sie Ihren Namen an.';
     }
 
-    const cleanPhone = phone.replace(/[\s\-\/\(\)]/g, '');
-    if (!cleanPhone || cleanPhone.length < 6) {
-      newErrors.phone = 'Bitte geben Sie eine gültige Telefonnummer an.';
-    }
-
-    if (!date) {
-      newErrors.date = 'Bitte wählen Sie ein Reservierungsdatum.';
-    } else if (date < todayStr) {
-      newErrors.date = 'Das Datum darf nicht in der Vergangenheit liegen.';
-    }
-
-    if (guests < 1 || guests > 25) {
-      newErrors.guests = 'Reservierungen sind für 1 bis max. 25 Personen möglich.';
+    if (!guests || guests < 1 || guests > 25) {
+      newErrors.guests = 'Bitte wählen Sie eine Personenanzahl (1 bis max. 25).';
     }
 
     setErrors(newErrors);
@@ -210,35 +196,15 @@ export const ReservationSection: React.FC = () => {
 
         {/* KOMPAKTER SECTION HEADER */}
         <div className="reservation-compact-header text-center">
-          <div className="badge-pill reservation-badge">
-            <Sparkles size={13} className="text-gold" />
-            <span>Tischreservierung • Café Praha Zittau</span>
-          </div>
-
           <h2 className="reservation-compact-headline">
             Tisch reservieren im <span className="gold-gradient-text">Café Praha</span>
           </h2>
 
           <p className="reservation-compact-subheadline">
-            Genießen Sie Ihren Kaffeehaus-Moment – sichern Sie sich unkompliziert Ihren Platz
-            zum Frühstück, tschechischen Mittagstisch oder für feine Backkunst.
+            Genießen Sie Ihren Kaffeehaus-Moment.
+            <br />
+            Sichern Sie sich unkompliziert Ihren Platz zum Frühstück, tschechischen Mittagstisch oder für feine Backkunst – Reservierungen auch für Gruppen bis zu 25 Personen möglich.
           </p>
-
-          {/* DREI SCHLANKE TRUST-PILLS (KOMPRIMIERTE INFOS) */}
-          <div className="reservation-trust-pills">
-            <div className="trust-pill-item">
-              <Timer size={14} className="text-gold" />
-              <span>10 Min. Kulanzfrist</span>
-            </div>
-            <div className="trust-pill-item">
-              <Users size={14} className="text-gold" />
-              <span>Gruppen bis 25 Personen</span>
-            </div>
-            <div className="trust-pill-item">
-              <Coffee size={14} className="text-gold" />
-              <span>Täglich 9:00 – 18:00 Uhr</span>
-            </div>
-          </div>
         </div>
 
         {/* ZENTRALE FOKUS-BÜHNE: DAS BUCHUNGSFORMULAR */}
@@ -249,15 +215,12 @@ export const ReservationSection: React.FC = () => {
             <div className="reservation-compact-card">
 
               <div className="compact-card-header">
-                <div className="compact-card-title-wrap">
-                  <div className="compact-card-icon">
-                    <CalendarCheck size={20} className="text-gold" />
-                  </div>
-                  <div>
-                    <h3 className="compact-card-title">Online reservieren</h3>
-                    <p className="compact-card-subtitle">Kostenlos, unverbindlich & in unter 1 Minute angefragt</p>
-                  </div>
+                <div className="compact-card-ornament" aria-hidden="true">
+                  <span className="ornament-line"></span>
+                  <span className="ornament-symbol">✦</span>
+                  <span className="ornament-line"></span>
                 </div>
+                <h3 className="compact-card-title">Jetzt Online reservieren</h3>
               </div>
 
               <form className="reservation-compact-form" onSubmit={handleSubmit} noValidate>
@@ -267,7 +230,7 @@ export const ReservationSection: React.FC = () => {
                   <div className="compact-field">
                     <label htmlFor={nameInputId} className="compact-label">
                       <User size={14} className="text-gold" />
-                      <span>Ihr Name <span className="req">*</span></span>
+                      <span>Ihr Name</span>
                     </label>
                     <input
                       id={nameInputId}
@@ -279,7 +242,6 @@ export const ReservationSection: React.FC = () => {
                         setFullName(e.target.value);
                         if (errors.fullName) setErrors((prev) => ({ ...prev, fullName: '' }));
                       }}
-                      required
                       autoComplete="name"
                     />
                     {errors.fullName && <div className="compact-error">{errors.fullName}</div>}
@@ -288,22 +250,19 @@ export const ReservationSection: React.FC = () => {
                   <div className="compact-field">
                     <label htmlFor={phoneInputId} className="compact-label">
                       <Phone size={14} className="text-gold" />
-                      <span>Telefonnummer für Bestätigung <span className="req">*</span></span>
+                      <span>Telefonnummer</span>
                     </label>
                     <input
                       id={phoneInputId}
                       type="tel"
-                      className={`compact-input ${errors.phone ? 'has-error' : ''}`}
+                      className="compact-input"
                       placeholder="z. B. 0172 1234567"
                       value={phone}
                       onChange={(e) => {
                         setPhone(e.target.value);
-                        if (errors.phone) setErrors((prev) => ({ ...prev, phone: '' }));
                       }}
-                      required
                       autoComplete="tel"
                     />
-                    {errors.phone && <div className="compact-error">{errors.phone}</div>}
                   </div>
                 </div>
 
@@ -312,28 +271,25 @@ export const ReservationSection: React.FC = () => {
                   <div className="compact-field">
                     <label htmlFor={dateInputId} className="compact-label">
                       <Calendar size={14} className="text-gold" />
-                      <span>Wann: Datum <span className="req">*</span></span>
+                      <span>Wann: Datum</span>
                     </label>
                     <input
                       id={dateInputId}
                       type="date"
                       min={todayStr}
-                      className={`compact-input ${errors.date ? 'has-error' : ''}`}
+                      className="compact-input"
                       value={date}
                       onChange={(e) => {
                         setDate(e.target.value);
                         playChime(820);
-                        if (errors.date) setErrors((prev) => ({ ...prev, date: '' }));
                       }}
-                      required
                     />
-                    {errors.date && <div className="compact-error">{errors.date}</div>}
                   </div>
 
                   <div className="compact-field">
                     <label htmlFor={timeInputId} className="compact-label">
                       <Clock size={14} className="text-gold" />
-                      <span>Uhrzeit <span className="req">*</span></span>
+                      <span>Uhrzeit</span>
                     </label>
                     <select
                       id={timeInputId}
@@ -455,10 +411,6 @@ export const ReservationSection: React.FC = () => {
                       </>
                     )}
                   </button>
-                </div>
-
-                <div className="compact-privacy-note">
-                  🔒 Keine Registrierung nötig. Ihre Daten dienen ausschließlich der Reservierungsbestätigung.
                 </div>
 
               </form>

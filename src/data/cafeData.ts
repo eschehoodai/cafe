@@ -60,7 +60,7 @@ export const CAFE_INFO: CafeInfo = {
   },
   contact: {
     phone: '+4935837964364',
-    phoneDisplay: '+49 (0) 3583 7964364',
+    phoneDisplay: '03583 7964364',
     email: 'kontakt@cafepraha.de',
   },
   hours: {
@@ -334,7 +334,7 @@ export const JOB_DATA = {
   imageAlt: 'Café Praha wartet auf dich – Kuchentheke und Silhouette',
   coffeeInvitation:
     'Lieber gleich persönlich vorstellen? Komm einfach auf einen Kaffee vorbei oder ruf uns an!',
-  phoneDisplay: '+49 (0) 3583 7964364',
+  phoneDisplay: '03583 7964364',
   phoneCall: '+4935837964364',
   email: 'kontakt@cafepraha.de',
 };
