@@ -22,6 +22,9 @@ export const GenussLounge: React.FC = () => {
   const [activeGallerySrc, setActiveGallerySrc] = useState<string | null>(null);
   const [isAnimating, setIsAnimating] = useState<boolean>(false);
 
+  const [touchStartX, setTouchStartX] = useState<number | null>(null);
+  const [touchStartY, setTouchStartY] = useState<number | null>(null);
+
   const activeCategory: GenussCategory = GENUSS_CATEGORIES[activeIndex];
 
   const handleSelectCategory = (index: number) => {
@@ -39,6 +42,28 @@ export const GenussLounge: React.FC = () => {
     if (next < 0) next = GENUSS_CATEGORIES.length - 1;
     if (next >= GENUSS_CATEGORIES.length) next = 0;
     handleSelectCategory(next);
+  };
+
+  const handleTouchStart = (e: React.TouchEvent) => {
+    setTouchStartX(e.touches[0].clientX);
+    setTouchStartY(e.touches[0].clientY);
+  };
+
+  const handleTouchEnd = (e: React.TouchEvent) => {
+    if (touchStartX === null || touchStartY === null) return;
+    const deltaX = touchStartX - e.changedTouches[0].clientX;
+    const deltaY = touchStartY - e.changedTouches[0].clientY;
+    
+    // Only trigger if horizontal swipe is dominant (not vertical scrolling)
+    if (Math.abs(deltaX) > 40 && Math.abs(deltaX) > Math.abs(deltaY) * 1.3) {
+      if (deltaX > 0) {
+        handleStep(1); // Swipe left -> Nächste Spezialität
+      } else {
+        handleStep(-1); // Swipe right -> Vorherige Spezialität
+      }
+    }
+    setTouchStartX(null);
+    setTouchStartY(null);
   };
 
   // Helper to render dynamic Lucide icon
@@ -104,7 +129,11 @@ export const GenussLounge: React.FC = () => {
           <div className="stage-media-col">
             
             {/* 1. Dedicated Unobstructed Photo Viewport */}
-            <div className="stage-photo-frame">
+            <div 
+              className="stage-photo-frame"
+              onTouchStart={handleTouchStart}
+              onTouchEnd={handleTouchEnd}
+            >
               <div className={`stage-img-wrapper ${isAnimating ? 'fade-out' : 'fade-in'}`}>
                 <img
                   key={displayImageSrc}

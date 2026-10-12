@@ -238,26 +238,23 @@ export const LegalModal: React.FC<LegalModalProps> = ({
           {activeTab === 'reservierung' && (
             <div className="legal-tab-content">
               <h2 id="legal-modal-title" className="legal-title">
-                Reservierungsrichtlinien &amp; Kulanzregel
+                Reservierungsrichtlinien
               </h2>
               <p className="legal-lead">
-                Damit alle Gäste die Prager Gemütlichkeit und unsere frischen Spezialitäten ohne lange Wartezeiten genießen können, gelten folgende Vereinbarungen:
+                Damit alle Gäste die Prager Gemütlichkeit und unsere frischen Spezialitäten in entspannter Atmosphäre genießen können, gelten folgende Richtlinien:
               </p>
 
               <div className="legal-highlight-card">
                 <div className="highlight-card-header">
                   <CalendarClock size={22} className="text-gold" />
-                  <strong>Die 10-Minuten-Kulanzregel</strong>
+                  <strong>Ihre Tischreservierung im Café Praha</strong>
                 </div>
                 <p>
-                  Ihr reservierter Tisch wird ab der vereinbarten Uhrzeit für Sie freigehalten. Sollte sich Ihre Ankunft verzögern, bitten wir Sie um eine kurze telefonische Rückmeldung unter{' '}
+                  Ihr reservierter Tisch wird ab der vereinbarten Uhrzeit herzlich für Sie freigehalten. Sollte sich Ihre Ankunft verzögern oder etwas dazwischenkommen, freuen wir uns über eine kurze telefonische Rückmeldung unter{' '}
                   <a href={`tel:${CAFE_INFO.contact.phone}`} className="gold-link">
                     {CAFE_INFO.contact.phoneDisplay}
                   </a>.
                 </p>
-                <div className="highlight-alert-box">
-                  ⏱️ <strong>Wichtiger Hinweis:</strong> Nach einer Verspätung von mehr als <strong>10 Minuten ohne vorherige Benachrichtigung</strong> behalten wir uns vor, den Tisch für andere wartende Gäste freizugeben.
-                </div>
               </div>
 
               <div className="legal-section-block">

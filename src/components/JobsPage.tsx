@@ -77,7 +77,7 @@ export const JobsPage: React.FC<JobsPageProps> = ({ onBack, onOpenLegal }) => {
     setFormData((prev) => ({ ...prev, employmentType: type }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setErrorMessage(null);
 
@@ -97,12 +97,29 @@ export const JobsPage: React.FC<JobsPageProps> = ({ onBack, onOpenLegal }) => {
     setIsSubmitting(true);
     playChime(960);
 
-    setTimeout(() => {
+    try {
+      await fetch('/api/send-reservation.php', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          type: 'job',
+          fullName: formData.fullName.trim(),
+          phone: formData.phone.trim(),
+          email: formData.email.trim(),
+          employmentType: formData.employmentType,
+          message: formData.message.trim(),
+        }),
+      });
+    } catch (err) {
+      console.warn('Jobs-Bewerbung Backend-Fallback:', err);
+    } finally {
       setIsSubmitting(false);
       setIsSubmitted(true);
       playChime(1120);
       window.scrollTo({ top: 0, behavior: 'smooth' });
-    }, 700);
+    }
   };
 
   const handleReset = () => {

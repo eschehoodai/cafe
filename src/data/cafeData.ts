@@ -62,12 +62,13 @@ export const CAFE_INFO: CafeInfo = {
     phone: '+4935837964364',
     phoneDisplay: '03583 7964364',
     email: 'kontakt@cafepraha.de',
+    reservationEmail: 'Tischreservierung@cafepraha.de',
   },
   hours: {
     regular: 'Täglich von 9:00 – 18:00 Uhr',
     breakfast: 'Mo–So von 9:00 – 11:00 Uhr (oder auf Reservierung)',
   },
-  reservationNote: 'Gruppenreservierungen bis max. 25 Personen möglich. Nach 10-minütiger Verspätung wird der Tisch für andere Gäste freigegeben.',
+  reservationNote: 'Gruppenreservierungen bis max. 25 Personen herzlich willkommen.',
 };
 
 export const HERO_DATA = {

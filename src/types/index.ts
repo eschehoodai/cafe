@@ -22,6 +22,7 @@ export interface CafeInfo {
     phone: string;
     phoneDisplay: string;
     email: string;
+    reservationEmail?: string;
   };
   hours: {
     regular: string;

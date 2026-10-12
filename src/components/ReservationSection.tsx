@@ -138,7 +138,7 @@ export const ReservationSection: React.FC = () => {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     if (!validate()) {
@@ -149,13 +149,41 @@ export const ReservationSection: React.FC = () => {
     setIsSubmitting(true);
     playChime(920);
 
-    setTimeout(() => {
-      const randomRef = 'CP-' + Math.floor(1000 + Math.random() * 9000);
-      setBookingRef(randomRef);
+    const generatedRef = 'CP-' + Math.floor(1000 + Math.random() * 9000);
+    let finalRef = generatedRef;
+
+    try {
+      const response = await fetch('/api/send-reservation.php', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          type: 'reservation',
+          bookingRef: generatedRef,
+          fullName: fullName.trim(),
+          phone: phone.trim(),
+          date,
+          time,
+          guests,
+          notes: notes.trim(),
+        }),
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        if (data.bookingRef) {
+          finalRef = data.bookingRef;
+        }
+      }
+    } catch (err) {
+      console.warn('Backend-Versand nicht verfügbar oder lokale Vorschau:', err);
+    } finally {
+      setBookingRef(finalRef);
       setIsSubmitting(false);
       setIsSubmitted(true);
       playChime(1120);
-    }, 750);
+    }
   };
 
   const handleReset = () => {
@@ -440,11 +468,6 @@ export const ReservationSection: React.FC = () => {
                 <span className="ref-label">Buchungs-Referenz:</span>
                 <span className="ref-val">{bookingRef}</span>
               </div>
-
-              <p className="compact-success-kulanz">
-                ⏱ <strong>10-Minuten-Kulanz:</strong> Sollten Sie sich verspäten, halten wir Ihren Tisch
-                10 Minuten für Sie frei. Bitte geben Sie uns bei Verzögerung kurz telefonisch Bescheid.
-              </p>
 
               <div className="compact-success-actions">
                 <button

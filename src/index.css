@@ -2156,27 +2156,92 @@ video {
     padding: 1.75rem 1.25rem 2rem;
   }
 
+  /* Mobile / Tablet: 2-Spalten Boutique-Grid für Smartphones, 3-Spalten für Tablets */
   .genuss-dock-nav {
-    display: flex;
-    flex-wrap: nowrap;
-    justify-content: flex-start;
-    overflow-x: auto;
-    border-radius: var(--radius-md);
-    padding: 0.5rem;
-    gap: 0.5rem;
-    scrollbar-width: none;
-    -webkit-overflow-scrolling: touch;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.55rem;
+    padding: 0.65rem;
+    border-radius: 18px;
+    margin: 0 auto 1.5rem auto;
+    background: rgba(24, 16, 12, 0.92);
+    border: 1px solid var(--glass-border);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    overflow: visible;
   }
 
-  .genuss-dock-nav::-webkit-scrollbar {
-    display: none;
+  @media (min-width: 641px) and (max-width: 960px) {
+    .genuss-dock-nav {
+      grid-template-columns: repeat(3, 1fr);
+    }
   }
 
   .genuss-dock-btn {
+    width: 100%;
+    min-height: 48px;
+    padding: 0.6rem 0.65rem;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 0.5rem;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(244, 205, 157, 0.12);
+    color: var(--color-cream-200);
+    text-align: left;
+    transition: all var(--transition-smooth);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  }
+
+  .genuss-dock-btn:hover {
+    background: rgba(244, 205, 157, 0.12);
+    border-color: rgba(244, 205, 157, 0.3);
+  }
+
+  .genuss-dock-btn.active {
+    background: linear-gradient(135deg, var(--color-gold-primary), var(--color-gold-amber));
+    color: #120b08;
+    border-color: transparent;
+    box-shadow: 0 4px 16px rgba(244, 205, 157, 0.35);
+  }
+
+  .genuss-dock-btn .dock-btn-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     flex-shrink: 0;
-    width: auto;
-    padding: 0.6rem 0.95rem;
-    font-size: 0.84rem;
+    width: 26px;
+    height: 26px;
+    border-radius: 8px;
+    background: rgba(244, 205, 157, 0.1);
+    color: var(--color-gold-primary);
+    transition: all var(--transition-smooth);
+  }
+
+  .genuss-dock-btn.active .dock-btn-icon {
+    background: rgba(18, 11, 8, 0.18);
+    color: #120b08;
+  }
+
+  .genuss-dock-btn .dock-btn-label {
+    font-size: clamp(0.74rem, 2.7vw, 0.84rem);
+    font-weight: 500;
+    line-height: 1.25;
+    white-space: normal;
+    word-break: normal;
+    overflow-wrap: break-word;
+    flex: 1;
+  }
+
+  .genuss-dock-btn.active .dock-btn-label {
+    font-weight: 700;
+    color: #120b08;
+  }
+
+  .genuss-dock-btn .dock-btn-dot {
+    display: none;
   }
 
   .stage-actions-row {
@@ -2209,6 +2274,23 @@ video {
   .gallery-thumb-btn {
     width: 44px;
     height: 44px;
+  }
+
+  .genuss-dock-nav {
+    gap: 0.45rem;
+    padding: 0.5rem;
+    border-radius: 16px;
+  }
+
+  .genuss-dock-btn {
+    padding: 0.55rem 0.5rem;
+    gap: 0.4rem;
+    min-height: 46px;
+  }
+
+  .genuss-dock-btn .dock-btn-icon {
+    width: 24px;
+    height: 24px;
   }
 }
 
@@ -2382,6 +2464,13 @@ video {
 
 .compact-label .req {
   color: var(--color-gold-amber);
+}
+
+.compact-label .opt-hint {
+  font-size: 0.76rem;
+  font-weight: 400;
+  color: rgba(244, 205, 157, 0.7);
+  letter-spacing: 0.2px;
 }
 
 .compact-label-split {
@@ -2623,17 +2712,6 @@ video {
   letter-spacing: 0.05em;
 }
 
-.compact-success-kulanz {
-  font-size: 0.84rem;
-  color: var(--color-cream-200);
-  background: rgba(244, 205, 157, 0.07);
-  border: 1px solid rgba(244, 205, 157, 0.15);
-  border-radius: var(--radius-sm);
-  padding: 0.75rem 1rem;
-  margin-bottom: 1.5rem;
-  line-height: 1.5;
-  text-align: left;
-}
 
 .compact-success-actions {
   display: flex;
