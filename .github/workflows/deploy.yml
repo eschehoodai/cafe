@@ -1,0 +1,37 @@
+name: Deploy Café Praha to Strato SFTP
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 📥 Repository auschecken
+        uses: actions/checkout@v4
+
+      - name: 🟢 Node.js einrichten
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: 📦 Dependencies installieren
+        run: npm ci
+
+      - name: 🏗️ Production Build erstellen
+        run: npm run build
+
+      - name: 🚀 Per SFTP zu Strato synchronisieren
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.SFTP_SERVER }}
+          username: ${{ secrets.SFTP_USERNAME }}
+          password: ${{ secrets.SFTP_PASSWORD }}
+          port: ${{ secrets.SFTP_PORT || 22 }}
+          protocol: sftp
+          local-dir: ./dist/
+          server-dir: /
+          dangerous-clean-slate: false
