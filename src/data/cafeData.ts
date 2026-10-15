@@ -62,7 +62,7 @@ export const CAFE_INFO: CafeInfo = {
     phone: '+4935837964364',
     phoneDisplay: '03583 7964364',
     email: 'kontakt@cafepraha.de',
-    reservationEmail: 'Tischreservierung@cafepraha.de',
+    reservationEmail: 'kontakt@cafepraha.de',
   },
   hours: {
     regular: 'Täglich von 9:00 – 18:00 Uhr',

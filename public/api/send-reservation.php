@@ -3,7 +3,7 @@
  * Café Praha - Formular- & Reservierungsversand
  * 
  * Sendet Reservierungs- und Kontaktanfragen an:
- * - Tischreservierung@cafepraha.de
+ * - kontakt@cafepraha.de
  * - eschehoodai@gmail.com (Testempfänger)
  */
 
@@ -41,12 +41,12 @@ $type = isset($data['type']) ? trim($data['type']) : 'reservation';
 
 // Empfänger festlegen
 $recipients = [
-    'Tischreservierung@cafepraha.de',
+    'kontakt@cafepraha.de',
     'eschehoodai@gmail.com'
 ];
 
 // Absender & Envelope-Sender (Wichtig für Strato-Mailserver: muss zur Domain gehören)
-$senderEmail = 'Tischreservierung@cafepraha.de';
+$senderEmail = 'kontakt@cafepraha.de';
 $senderName  = 'Café Praha Reservierungssystem';
 
 // Buchungsreferenz ermitteln oder generieren
@@ -217,7 +217,7 @@ if ($type === 'job') {
 
         <div class='footer'>
           Café Praha Zittau • Innere Weberstraße 3 & 8 • 02763 Zittau<br>
-          Telefon: 03583 7964364 • Tischreservierung@cafepraha.de
+          Telefon: 03583 7964364 • kontakt@cafepraha.de
         </div>
       </div>
     </body>
@@ -240,7 +240,7 @@ $headersString = implode("\r\n", $headers);
 // Envelope-Sender-Parameter für Strato (verhindert Spam-/Discard-Filterung)
 $extraParameters = "-f {$senderEmail}";
 
-// Versand an alle Empfänger (Tischreservierung@cafepraha.de & eschehoodai@gmail.com)
+// Versand an alle Empfänger (kontakt@cafepraha.de & eschehoodai@gmail.com)
 $sentCount = 0;
 $errors = [];
 
