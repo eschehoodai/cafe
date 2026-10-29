@@ -1,4 +1,4 @@
-import React, { useState, useId, useRef } from 'react';
+import React, { useState, useId, useRef, useMemo, useEffect } from 'react';
 import {
   Calendar,
   Clock,
@@ -13,6 +13,35 @@ import {
   RotateCcw,
 } from 'lucide-react';
 import { CAFE_INFO } from '../data/cafeData';
+
+// Mindestvorlaufzeit in Stunden für Online-Reservierungen
+const MIN_LEAD_HOURS = 2;
+
+// Liefert lokales Datum YYYY-MM-DD ohne Zeitzonenversatz
+const getLocalDateString = (d: Date = new Date()): string => {
+  const year = d.getFullYear();
+  const month = String(d.getMonth() + 1).padStart(2, '0');
+  const day = String(d.getDate()).padStart(2, '0');
+  return `${year}-${month}-${day}`;
+};
+
+// Prüft, ob ein Slot (z.B. '14:30') an einem Tag (z.B. '2026-10-29') mindestens 2 Stunden in der Zukunft liegt
+const isSlotAvailable = (slotTime: string, selectedDateStr: string, toleranceMinutes = 0): boolean => {
+  if (!slotTime || !selectedDateStr) return false;
+  const timeParts = slotTime.split(':');
+  const dateParts = selectedDateStr.split('-');
+  if (timeParts.length < 2 || dateParts.length < 3) return false;
+
+  const hours = parseInt(timeParts[0], 10);
+  const minutes = parseInt(timeParts[1], 10);
+  const year = parseInt(dateParts[0], 10);
+  const month = parseInt(dateParts[1], 10) - 1;
+  const day = parseInt(dateParts[2], 10);
+
+  const slotDate = new Date(year, month, day, hours, minutes, 0, 0);
+  const minAllowedMs = Date.now() + (MIN_LEAD_HOURS * 60 - toleranceMinutes) * 60 * 1000;
+  return slotDate.getTime() >= minAllowedMs;
+};
 
 // Available time slots during Café Praha opening hours (09:00 - 18:00)
 const TIME_SLOTS = [
@@ -39,8 +68,20 @@ const TIME_SLOTS = [
 const PRESET_GUEST_COUNTS = [1, 2, 3, 4, 5, 6, 8];
 
 export const ReservationSection: React.FC = () => {
-  // Today's date in YYYY-MM-DD
-  const todayStr = new Date().toISOString().split('T')[0];
+  // Lokales heutiges Datum in YYYY-MM-DD
+  const todayStr = useMemo(() => getLocalDateString(), []);
+  const tomorrowStr = useMemo(() => {
+    const d = new Date();
+    d.setDate(d.getDate() + 1);
+    return getLocalDateString(d);
+  }, []);
+
+  // Prüfen, ob heute überhaupt noch buchbare Slots mit 2 Std. Vorlauf existieren.
+  // Wenn nicht (z.B. nach 15:30 Uhr), standardmäßig auf morgen springen.
+  const defaultInitialDate = useMemo(() => {
+    const hasTodaySlots = TIME_SLOTS.some((s) => isSlotAvailable(s.time, todayStr));
+    return hasTodaySlots ? todayStr : tomorrowStr;
+  }, [todayStr, tomorrowStr]);
 
   // Form states
   const [fullName, setFullName] = useState('');
@@ -48,9 +89,33 @@ export const ReservationSection: React.FC = () => {
   const [guests, setGuests] = useState<number>(2);
   const [customGuests, setCustomGuests] = useState<string>('2');
   const [isCustomGuestsMode, setIsCustomGuestsMode] = useState(false);
-  const [date, setDate] = useState<string>(todayStr);
-  const [time, setTime] = useState<string>('14:30');
+  const [date, setDate] = useState<string>(defaultInitialDate);
+
+  // Verfügbare Slots für das gewählte Datum (dynamisch gefiltert auf mind. 2 Stunden Vorlauf)
+  const availableSlots = useMemo(() => {
+    return TIME_SLOTS.filter((slot) => isSlotAvailable(slot.time, date));
+  }, [date]);
+
+  // Initialzeit: Bevorzugt 14:30 Uhr oder den ersten verfügbaren Slot
+  const [time, setTime] = useState<string>(() => {
+    const currentSlots = TIME_SLOTS.filter((slot) => isSlotAvailable(slot.time, defaultInitialDate));
+    if (currentSlots.length > 0) {
+      const preferred = currentSlots.find((s) => s.time === '14:30');
+      return preferred ? preferred.time : currentSlots[0].time;
+    }
+    return '14:30';
+  });
   const [notes, setNotes] = useState('');
+
+  // Wenn das Datum wechselt und die zuvor gewählte Uhrzeit nicht mehr verfügbar ist, auf den ersten gültigen Slot setzen
+  useEffect(() => {
+    if (availableSlots.length > 0) {
+      const isCurrentSlotValid = availableSlots.some((s) => s.time === time);
+      if (!isCurrentSlotValid) {
+        setTime(availableSlots[0].time);
+      }
+    }
+  }, [availableSlots, time]);
 
   // Submission states
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -115,7 +180,7 @@ export const ReservationSection: React.FC = () => {
     const val = e.target.value;
     setCustomGuests(val);
     const parsed = parseInt(val, 10);
-    if (!isNaN(parsed) && parsed >= 1 && parsed <= 25) {
+    if (!isNaN(parsed) && parsed >= 1 && parsed <= 15) {
       setGuests(parsed);
       if (errors.guests) {
         setErrors((prev) => ({ ...prev, guests: '' }));
@@ -130,8 +195,17 @@ export const ReservationSection: React.FC = () => {
       newErrors.fullName = 'Bitte geben Sie Ihren Namen an.';
     }
 
-    if (!guests || guests < 1 || guests > 25) {
-      newErrors.guests = 'Bitte wählen Sie eine Personenanzahl (1 bis max. 25).';
+    if (!guests || guests < 1 || guests > 15) {
+      newErrors.guests = 'Bitte wählen Sie eine Personenanzahl (1 bis max. 15).';
+    }
+
+    if (!date) {
+      newErrors.date = 'Bitte wählen Sie ein Datum.';
+    }
+
+    // 2 Stunden Vorlaufzeit prüfen (mit 5 Minuten Kulanzzeit für das Tippen im Formular)
+    if (availableSlots.length === 0 || !isSlotAvailable(time, date, 5)) {
+      newErrors.time = 'Mindestens 2 Stunden Vorlaufzeit erforderlich. Für heute rufen Sie uns bitte direkt an.';
     }
 
     setErrors(newErrors);
@@ -187,13 +261,18 @@ export const ReservationSection: React.FC = () => {
   };
 
   const handleReset = () => {
+    const todaySlots = TIME_SLOTS.filter((s) => isSlotAvailable(s.time, todayStr));
+    const nextDate = todaySlots.length > 0 ? todayStr : tomorrowStr;
+    const nextSlots = todaySlots.length > 0 ? todaySlots : TIME_SLOTS;
+    const defaultTime = nextSlots.find((s) => s.time === '14:30')?.time || nextSlots[0]?.time || '14:30';
+
     setFullName('');
     setPhone('');
     setGuests(2);
     setCustomGuests('2');
     setIsCustomGuestsMode(false);
-    setDate(todayStr);
-    setTime('14:30');
+    setDate(nextDate);
+    setTime(defaultTime);
     setNotes('');
     setErrors({});
     setIsSubmitted(false);
@@ -231,7 +310,7 @@ export const ReservationSection: React.FC = () => {
           <p className="reservation-compact-subheadline">
             Genießen Sie Ihren Kaffeehaus-Moment.
             <br />
-            Sichern Sie sich unkompliziert Ihren Platz zum Frühstück, tschechischen Mittagstisch oder für feine Backkunst – Reservierungen auch für Gruppen bis zu 25 Personen möglich.
+            Sichern Sie sich unkompliziert Ihren Platz zum Frühstück, tschechischen Mittagstisch oder für feine Backkunst – Reservierungen auch für Gruppen bis zu 15 Personen möglich.
           </p>
         </div>
 
@@ -305,13 +384,16 @@ export const ReservationSection: React.FC = () => {
                       id={dateInputId}
                       type="date"
                       min={todayStr}
-                      className="compact-input"
+                      className={`compact-input ${errors.date ? 'has-error' : ''}`}
                       value={date}
                       onChange={(e) => {
                         setDate(e.target.value);
                         playChime(820);
+                        if (errors.date) setErrors((prev) => ({ ...prev, date: '' }));
+                        if (errors.time) setErrors((prev) => ({ ...prev, time: '' }));
                       }}
                     />
+                    {errors.date && <div className="compact-error">{errors.date}</div>}
                   </div>
 
                   <div className="compact-field">
@@ -319,21 +401,57 @@ export const ReservationSection: React.FC = () => {
                       <Clock size={14} className="text-gold" />
                       <span>Uhrzeit</span>
                     </label>
-                    <select
-                      id={timeInputId}
-                      className="compact-select"
-                      value={time}
-                      onChange={(e) => {
-                        setTime(e.target.value);
-                        playChime(850);
-                      }}
-                    >
-                      {TIME_SLOTS.map((slot) => (
-                        <option key={slot.time} value={slot.time}>
-                          {slot.label}
-                        </option>
-                      ))}
-                    </select>
+                    {availableSlots.length > 0 ? (
+                      <select
+                        id={timeInputId}
+                        className={`compact-select ${errors.time ? 'has-error' : ''}`}
+                        value={time}
+                        onChange={(e) => {
+                          setTime(e.target.value);
+                          playChime(850);
+                          if (errors.time) setErrors((prev) => ({ ...prev, time: '' }));
+                        }}
+                      >
+                        {availableSlots.map((slot) => (
+                          <option key={slot.time} value={slot.time}>
+                            {slot.label}
+                          </option>
+                        ))}
+                      </select>
+                    ) : (
+                      <div
+                        style={{
+                          padding: '0.55rem 0.65rem',
+                          background: 'rgba(38, 24, 20, 0.75)',
+                          border: '1px solid rgba(244, 205, 157, 0.25)',
+                          borderRadius: '6px',
+                          fontSize: '0.8rem',
+                          color: '#f5d089',
+                          lineHeight: 1.35,
+                        }}
+                      >
+                        Heute keine Online-Termine mehr (mind. 2 Std. Vorlaufzeit).
+                      </div>
+                    )}
+                    {errors.time && <div className="compact-error">{errors.time}</div>}
+                    {availableSlots.length > 0 ? (
+                      <span
+                        className="custom-stepper-sub"
+                        style={{ display: 'block', marginTop: '0.25rem', fontSize: '0.72rem', color: 'rgba(214, 195, 178, 0.65)' }}
+                      >
+                        Mind. 2 Std. Vorlaufzeit
+                      </span>
+                    ) : (
+                      <div style={{ marginTop: '0.35rem', fontSize: '0.76rem', color: '#e8d9c0' }}>
+                        Spontan heute?{' '}
+                        <a
+                          href={`tel:${CAFE_INFO.contact.phone}`}
+                          style={{ color: '#f5d089', textDecoration: 'underline', fontWeight: 600 }}
+                        >
+                          Direkt anrufen: {CAFE_INFO.contact.phoneDisplay}
+                        </a>
+                      </div>
+                    )}
                   </div>
                 </div>
 
@@ -368,26 +486,26 @@ export const ReservationSection: React.FC = () => {
                         setIsCustomGuestsMode(true);
                         playChime(950);
                       }}
-                      title="Große Gruppe bis zu 25 Personen"
+                      title="Gruppe bis zu 15 Personen"
                     >
                       Gruppe...
                     </button>
                   </div>
 
-                  {/* Optionaler Inline-Stepper für Gruppen */}
+                  {/* Optionaler Inline-Stepper für Gruppen bis zu 15 Personen */}
                   {isCustomGuestsMode && (
                     <div className="compact-custom-guests-box">
-                      <span className="custom-stepper-hint">Personenanzahl (1 bis max. 25):</span>
+                      <span className="custom-stepper-hint">Personenanzahl (1 bis max. 15):</span>
                       <input
                         id={guestsInputId}
                         type="number"
                         min="1"
-                        max="25"
+                        max="15"
                         className="compact-input compact-stepper-input"
                         value={customGuests}
                         onChange={handleCustomGuestsChange}
                       />
-                      <span className="custom-stepper-sub">Gruppen bis 25 Personen herzlich willkommen</span>
+                      <span className="custom-stepper-sub">Gruppen bis 15 Personen herzlich willkommen</span>
                     </div>
                   )}
 
@@ -417,7 +535,7 @@ export const ReservationSection: React.FC = () => {
                     <span className="summary-text">
                       Auswahl:{' '}
                       <strong>
-                        {guests} {guests === 1 ? 'Gast' : 'Gäste'} • {formatFriendlyDate(date)} um {time} Uhr
+                        {guests} {guests === 1 ? 'Gast' : 'Gäste'} • {formatFriendlyDate(date)} {availableSlots.length > 0 ? `um ${time} Uhr` : '(keine freien Online-Slots)'}
                       </strong>
                     </span>
                   </div>
@@ -425,12 +543,16 @@ export const ReservationSection: React.FC = () => {
                   <button
                     type="submit"
                     className="compact-submit-btn"
-                    disabled={isSubmitting}
+                    disabled={isSubmitting || availableSlots.length === 0}
                   >
                     {isSubmitting ? (
                       <>
                         <RefreshCw size={16} className="spin-icon" />
                         <span>Wird angefragt...</span>
+                      </>
+                    ) : availableSlots.length === 0 ? (
+                      <>
+                        <span>Heute online nicht mehr verfügbar</span>
                       </>
                     ) : (
                       <>

@@ -258,9 +258,20 @@ export const LegalModal: React.FC<LegalModalProps> = ({
               </div>
 
               <div className="legal-section-block">
+                <h3>Vorlaufzeit für Online-Reservierungen</h3>
+                <p>
+                  Damit unsere Küche und der Service Ihren Besuch optimal vorbereiten können, bitten wir bei Online-Reservierungen um eine Mindestvorlaufzeit von <strong>2 Stunden</strong>. Für sehr kurzfristige Besuche oder Reservierungen am selben Tag innerhalb der nächsten 2 Stunden rufen Sie uns bitte einfach kurz unter{' '}
+                  <a href={`tel:${CAFE_INFO.contact.phone}`} className="gold-link">
+                    {CAFE_INFO.contact.phoneDisplay}
+                  </a>{' '}
+                  an.
+                </p>
+              </div>
+
+              <div className="legal-section-block">
                 <h3>Gruppengröße &amp; Feierlichkeiten</h3>
                 <p>
-                  Über unser Online-Formular sowie telefonisch nehmen wir Reservierungen bis zu einer Gruppengröße von maximal <strong>25 Personen</strong> entgegen. Für größere Gesellschaften oder exklusive Veranstaltungen sprechen Sie uns bitte persönlich für ein individuelles Catering an.
+                  Über unser Online-Formular sowie telefonisch nehmen wir Reservierungen bis zu einer Gruppengröße von maximal <strong>15 Personen</strong> entgegen. Für größere Gesellschaften oder exklusive Veranstaltungen sprechen Sie uns bitte persönlich für ein individuelles Catering an.
                 </p>
               </div>
 

@@ -7,6 +7,9 @@
  * - eschehoodai@gmail.com (Testempfänger)
  */
 
+// Zeitzone für Deutschland/Zittau
+date_default_timezone_set('Europe/Berlin');
+
 // Sicherheits- und CORS-Header
 header('Content-Type: application/json; charset=UTF-8');
 header('Access-Control-Allow-Origin: *');
@@ -135,6 +138,22 @@ if ($type === 'job') {
     if (empty($fullName)) {
         http_response_code(400);
         echo json_encode(['success' => false, 'error' => 'Name ist erforderlich.']);
+        exit;
+    }
+
+    // Gästeanzahl validieren (1 bis max. 15 Personen)
+    if ($guests < 1 || $guests > 15) {
+        http_response_code(400);
+        echo json_encode(['success' => false, 'error' => 'Online-Reservierungen sind für 1 bis maximal 15 Personen möglich. Für größere Gesellschaften kontaktieren Sie uns bitte direkt.']);
+        exit;
+    }
+
+    // Datum & Uhrzeit validieren (mind. 2 Stunden Vorlaufzeit mit 60 Sek. Kulanz)
+    $reservationTimestamp = strtotime("{$date} {$time}");
+    $minAllowedTimestamp = time() + (2 * 3600) - 60;
+    if ($reservationTimestamp === false || $reservationTimestamp < $minAllowedTimestamp) {
+        http_response_code(400);
+        echo json_encode(['success' => false, 'error' => 'Online-Reservierungen erfordern mindestens 2 Stunden Vorlaufzeit. Für kurzfristige Tischreservierungen rufen Sie uns bitte direkt unter 03583 7964364 an.']);
         exit;
     }
 

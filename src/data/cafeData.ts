@@ -68,7 +68,7 @@ export const CAFE_INFO: CafeInfo = {
     regular: 'Täglich von 9:00 – 18:00 Uhr',
     breakfast: 'Mo–So von 9:00 – 11:00 Uhr (oder auf Reservierung)',
   },
-  reservationNote: 'Gruppenreservierungen bis max. 25 Personen herzlich willkommen.',
+  reservationNote: 'Gruppenreservierungen bis max. 15 Personen herzlich willkommen.',
 };
 
 export const HERO_DATA = {

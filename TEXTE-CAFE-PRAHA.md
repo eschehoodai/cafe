@@ -188,7 +188,7 @@
 
 ### Reservierungsbedingungen:
 - **Art:** Bitte telefonisch.
-- **Gruppengröße:** Gruppenreservierungen sind bis max. 25 Personen möglich.
+- **Gruppengröße:** Gruppenreservierungen sind bis max. 15 Personen möglich. Online mit mind. 2 Stunden Vorlaufzeit.
 - **Wichtige Anmerkung:** Nach 10-minütiger Verspätung wird Ihre Reservierung für andere Gäste freigegeben. Daher kontaktieren Sie uns bitte bei einer Verspätung rechtzeitig telefonisch.
 
 ---

@@ -25,3 +25,6 @@ Thumbs.db
 *.njsproj
 *.sln
 *.sw?
+
+# Agent / Tooling cache
+.github/context-mode/
